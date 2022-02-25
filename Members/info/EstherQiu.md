@@ -1,3 +1,1 @@
-Name: Esther Qiu <br />
-Major: Computer Engineering<br />
-Hobbit: babminton, hiking, get boba!<br />
+I am Esther and I am a Computer Engineering major. Some of my hobbies include hiking, badminton, baking...
