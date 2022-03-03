@@ -2,10 +2,13 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter/services.dart';
+import 'dart:developer';
 import '../device/device.dart';
-import 'package:get/get.dart';
 import 'controller.dart';
+import 'add_device1.dart';
+
+int index = 0;
+int c = 0;
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -61,10 +64,11 @@ class HomeView extends StatelessWidget {
             // Device list
             Padding(
               // padding: EdgeInsets.all(10),
-              padding: EdgeInsets.symmetric(vertical: 160.0, horizontal: 10.0),
+              padding: const EdgeInsets.only(top: 140.0, bottom: 40.0, left: 10.0, right: 10.0),
               child: ListView(
                 children: <Widget>[
                   GridView.builder(
+                    primary: true,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
@@ -72,45 +76,13 @@ class HomeView extends StatelessWidget {
                       crossAxisCount: 2,
                       crossAxisSpacing: 20.0,
                       mainAxisSpacing: 30.0,
-                      mainAxisExtent: 110,
+                      mainAxisExtent: 100,
                       childAspectRatio: 3/4,
                     ),
-                    itemCount: 5,
+                    itemCount: _ItemCount() + 1,
                     itemBuilder: (context, index) {
-                      return ElevatedButton(
-                        onPressed: ()  => Get.to(Controller()),
-                        child: Column(
-                          children: <Widget> [
-                            Container(
-                              alignment: Alignment.center,
-                              height: 90.0,
-                              child:Icon(
-                                Icons.tv,
-                                color: Colors.black,
-                                size: 30.0,
-                              ),
-                            ),
-                            Text(
-                              'My PROJECTOR',
-                              style: TextStyle(
-                                height: -1.5,
-                                fontFamily: 'Righteous',
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.normal,
-                                letterSpacing: 1.0,
-                                color: Color.fromRGBO(255, 255, 255, 1),
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40.0),
-                          ),
-                          primary: Color.fromRGBO(255, 255, 255, 0.33),
-                        ),
-                      );
+                      c++;
+                      return _ButtonBuilder();
                     },
                   ),
                 ],
@@ -122,6 +94,149 @@ class HomeView extends StatelessWidget {
       ),
     );
   }
+}
+
+List<String> type = ['TV','PROJECTOR','AC','LIGHT BULB'];
+String data = '';
+int count = 0;
+
+int _ItemCount(){
+  count = type.length;
+  return count;
+}
+
+String _Type(){
+  String t = '';
+  log('$type');
+  index = index % (count);
+  //log('$index');
+  if(type[index] == 'TV'){
+    t = 'TV';
+  }
+  else if(type[index] == 'AC'){
+    t = 'AC';
+  }
+  else if(type[index] == 'PROJECTOR'){
+    t = 'PROJECTOR';
+  }
+  else if(type[index] == 'LIGHT BULB'){
+    t = 'LIGHT BULB';
+  }
+  index = index + 1;
+  // data = t;
+  return t;
+}
+
+Icon _icon(){
+  if(data == 'TV'){
+    return Icon(
+      Icons.tv,
+      color: Colors.black,
+      size: 30.0,
+    );
+  }
+  else if(data == 'PROJECTOR'){
+    return Icon(
+      Icons.videogame_asset,
+      color: Colors.black,
+      size: 30.0,
+    );
+  }
+  else if(data == 'LIGHT BULB'){
+    return Icon(
+      Icons.lightbulb,
+      color: Colors.black,
+      size: 30.0,
+    );
+  }
+  else if(data == 'AC'){
+    return Icon(
+      Icons.hvac,
+      color: Colors.black,
+      size: 30.0,
+    );
+  }
+  else{
+    return Icon(
+      Icons.add,
+      color: Colors.black,
+      size: 30.0,
+    );
+  }
+
+}
+
+Container _container(){
+  return Container(
+    alignment: Alignment.center,
+    height: 90.0,
+    child:_icon(),
+  );
+}
+
+Text _textinfo(){
+  return Text(
+    'MY ' + data,
+    style: TextStyle(
+      height: -1.5,
+      fontFamily: 'Righteous',
+      fontSize: 15.0,
+      fontWeight: FontWeight.normal,
+      letterSpacing: 1.0,
+      color: Color.fromRGBO(255, 255, 255, 1),
+    ),
+    textAlign: TextAlign.center,
+  );
+}
+
+Column _DeviceListBuilder(){
+  data = _Type();
+  final children = <Widget>[];
+  children.add(_container());
+  children.add(_textinfo());
+  return Column(
+    children: children,
+  );
+}
+int n = 1;
+ElevatedButton _ButtonBuilder(){
+  log('c: $c');
+  if(c == n*(_ItemCount() + 1)){
+    log('Here c: $c');
+    n = n + 1;
+    return ElevatedButton(
+      onPressed: ()  => Get.to(Add_Device_1()),
+      child: Center(
+        child: Icon(
+          Icons.add_circle,
+          color: Colors.white,
+          size: 30.0,
+        ),
+        ),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40.0),
+        ),
+        primary: Color.fromRGBO(255, 255, 255, 0.00),
+      ),
+    );
+  }
+  else{
+    return ElevatedButton(
+      onPressed: ()  => Get.to(Controller()),
+      child: Center(
+        child: _DeviceListBuilder(),
+
+      ),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40.0),
+        ),
+        primary: Color.fromRGBO(255, 255, 255, 0.33),
+      ),
+    );
+  }
+
 }
 
 //        ),
