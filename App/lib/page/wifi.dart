@@ -47,9 +47,10 @@ class _Add_wifi extends State<Add_WiFi> {
                 ),
               ),
             ) ,
-            // Return to HOME
+            // Return to Home
+            // FIXME
             GestureDetector(
-              onTap: () => Get.to(() => HomeView()),
+              onTap: () => Get.to(HomeView()),
               child: Container(
                 height: 40.0,
                 margin: const EdgeInsets.only(left:320.0, top:10.0, right: 5.0),
@@ -110,7 +111,7 @@ class _Add_wifi extends State<Add_WiFi> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Color.fromRGBO(255, 255, 255, 0.33),
-                borderRadius: BorderRadius.circular(40),
+                borderRadius: BorderRadius.circular(30),
               ),
               child: Center(
                 child: Column(
@@ -120,8 +121,7 @@ class _Add_wifi extends State<Add_WiFi> {
                         Text(
                           'USERNAME: ',
                           style: TextStyle(
-
-                            height: 3,
+                            height: 2,
                             fontFamily: 'Righteous',
                             fontSize: 22.0,
                             fontWeight: FontWeight.normal,
@@ -132,7 +132,6 @@ class _Add_wifi extends State<Add_WiFi> {
                         Text(
                           'PASSWORD: ',
                           style: TextStyle(
-
                             height: 6,
                             fontFamily: 'Righteous',
                             fontSize: 22.0,
@@ -141,64 +140,201 @@ class _Add_wifi extends State<Add_WiFi> {
                             color: Colors.white,
                           ),
                         ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: 'Enter your username',
+                        Expanded(
+                          child: Stack(
+                              children: [
+                                TextFormField(
+                                  cursorHeight: 50,
+                                  decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(),
+                                    hintText: 'Enter your Username',
+                                  ),
+                                  style: TextStyle(
+                                    height: 2,
+                                  ),
+                                ),
+
+                                TextFormField(
+                                  cursorHeight: 50,
+                                  decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(),
+                                    hintText: 'Enter your Password',
+                                  ),
+                                  style: TextStyle(
+                                    height: 9,
+                                  ),
+                                ),
+                              ]
                           ),
-                        ),
+
+
+                        )
                       ],
                     ),
 
-                    Row(
-                      children: [
-                        Text(
-                          'USERNAME: ',
-                          style: TextStyle(
-
-                            height: 2.2,
-                            fontFamily: 'Righteous',
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.normal,
-                            letterSpacing: 1.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Container(),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     Text(
+                    //       'USERNAME: ',
+                    //       style: TextStyle(
+                    //
+                    //         height: 2.2,
+                    //         fontFamily: 'Righteous',
+                    //         fontSize: 14.0,
+                    //         fontWeight: FontWeight.normal,
+                    //         letterSpacing: 1.0,
+                    //         color: Colors.white,
+                    //       ),
+                    //     ),
+                    //     Container(),
+                    //   ],
+                    // ),
                     // Return to Home
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(() => HomeView());
-                      },
-                      child: Container(
-                        height: 40.0,
-                        margin: const EdgeInsets.only(left:320.0, top:10.0, right: 5.0),
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(255, 255, 255, 0.5),
-                          borderRadius: BorderRadius.all(Radius.circular(30))
-                          // shape: BoxShape.rectangle,
-                          ),
-                        child: Center(
-                          child: Text(
-                          'CONNECT',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'Righteous',
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.normal,
-                            letterSpacing: 1.0,
-                            color: Colors.black,
-                          ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Get.to(() => HomeView());
+                    //   },
+                    //   child: Container(
+                    //     height: 40.0,
+                    //     margin: const EdgeInsets.only(left:320.0, top:10.0, right: 5.0),
+                    //     decoration: BoxDecoration(
+                    //         color: Color.fromRGBO(255, 255, 255, 0.5),
+                    //         borderRadius: BorderRadius.all(Radius.circular(30))
+                    //       // shape: BoxShape.rectangle,
+                    //     ),
+                    //     child: Center(
+                    //       child: Text(
+                    //         'CONNECT',
+                    //         textAlign: TextAlign.center,
+                    //         style: TextStyle(
+                    //           fontFamily: 'Righteous',
+                    //           fontSize: 12.0,
+                    //           fontWeight: FontWeight.normal,
+                    //           letterSpacing: 1.0,
+                    //           color: Colors.black,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
             ),
+            // Container(
+            //   margin: EdgeInsets.symmetric(vertical: 220.0, horizontal: 5.0),
+            //   width: double.infinity,
+            //   decoration: BoxDecoration(
+            //     color: Color.fromRGBO(255, 255, 255, 0.33),
+            //     borderRadius: BorderRadius.circular(40),
+            //   ),
+            //   child: Center(
+            //     child: Column(
+            //       children: [
+            //         Row(
+            //           children: [
+            //             Text(
+            //               'USERNAME: ',
+            //               style: TextStyle(
+            //
+            //                 height: 3,
+            //                 fontFamily: 'Righteous',
+            //                 fontSize: 22.0,
+            //                 fontWeight: FontWeight.normal,
+            //                 letterSpacing: 1.0,
+            //                 color: Colors.white,
+            //               ),
+            //             ),
+            //             Text(
+            //               'PASSWORD: ',
+            //               style: TextStyle(
+            //                 height: 6,
+            //                 fontFamily: 'Righteous',
+            //                 fontSize: 22.0,
+            //                 fontWeight: FontWeight.normal,
+            //                 letterSpacing: 1.0,
+            //                 color: Colors.white,
+            //               ),
+            //             ),
+            //             Expanded(
+            //               child: Stack(
+            //                   children: [
+            //                     TextFormField(
+            //                       decoration: const InputDecoration(
+            //                         border: UnderlineInputBorder(),
+            //                         hintText: 'Enter your Username',
+            //                       ),
+            //                       style: TextStyle(
+            //                         height: 3,
+            //                       ),
+            //                     ),
+            //
+            //                     TextFormField(
+            //                       decoration: const InputDecoration(
+            //                         border: UnderlineInputBorder(),
+            //                         hintText: 'Enter your Password',
+            //                       ),
+            //                       style: TextStyle(
+            //                         height: 9,
+            //                       ),
+            //                     ),
+            //                   ]
+            //               ),
+            //
+            //
+            //             )
+            //           ],
+            //         ),
+            //
+            //         // Row(
+            //         //   children: [
+            //         //     Text(
+            //         //       'USERNAME: ',
+            //         //       style: TextStyle(
+            //         //
+            //         //         height: 2.2,
+            //         //         fontFamily: 'Righteous',
+            //         //         fontSize: 14.0,
+            //         //         fontWeight: FontWeight.normal,
+            //         //         letterSpacing: 1.0,
+            //         //         color: Colors.white,
+            //         //       ),
+            //         //     ),
+            //         //     Container(),
+            //         //   ],
+            //         // ),
+            //         // Return to Home
+            //         // GestureDetector(
+            //         //   onTap: () {
+            //         //     Get.to(() => HomeView());
+            //         //   },
+            //         //   child: Container(
+            //         //     height: 40.0,
+            //         //     margin: const EdgeInsets.only(left:320.0, top:10.0, right: 5.0),
+            //         //     decoration: BoxDecoration(
+            //         //         color: Color.fromRGBO(255, 255, 255, 0.5),
+            //         //         borderRadius: BorderRadius.all(Radius.circular(30))
+            //         //       // shape: BoxShape.rectangle,
+            //         //     ),
+            //         //     child: Center(
+            //         //       child: Text(
+            //         //         'CONNECT',
+            //         //         textAlign: TextAlign.center,
+            //         //         style: TextStyle(
+            //         //           fontFamily: 'Righteous',
+            //         //           fontSize: 12.0,
+            //         //           fontWeight: FontWeight.normal,
+            //         //           letterSpacing: 1.0,
+            //         //           color: Colors.black,
+            //         //         ),
+            //         //       ),
+            //         //     ),
+            //         //   ),
+            //         // ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
