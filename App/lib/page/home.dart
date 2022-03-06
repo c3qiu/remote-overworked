@@ -2,6 +2,7 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:remote_overworked/page/wifi.dart';
 import 'dart:developer';
 // import '../device/device.dart';
 import 'controller.dart';
@@ -88,6 +89,19 @@ class Home extends State<HomeView> {
                 color: Color.fromRGBO(255, 255, 255, 1),
               ),
             ),
+            // Wifi Setting button
+            ElevatedButton(
+              onPressed: () async {
+                await Get.to(() => Add_WiFi());
+              },
+              child: Icon(
+                Icons.wifi
+              ),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(50, 50),
+                primary: Color.fromRGBO(255, 255, 255, 0.00),
+              ),
+            ),
             // trash icon
             Positioned(
               top:15.0,
@@ -125,8 +139,10 @@ class Home extends State<HomeView> {
                       return _ButtonBuilder();
                     },
                   ),
+
                 ],
               ),
+
             ),
             Divider(),
           ],

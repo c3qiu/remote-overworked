@@ -47,6 +47,31 @@ class _Add_wifi extends State<Add_WiFi> {
                 ),
               ),
             ) ,
+            // Return to HOME
+            GestureDetector(
+              onTap: () => Get.to(() => HomeView()),
+              child: Container(
+                height: 40.0,
+                margin: const EdgeInsets.only(left:320.0, top:10.0, right: 5.0),
+                decoration: BoxDecoration(
+                    color: Color.fromRGBO(255, 255, 255, 0.5),
+                    borderRadius: BorderRadius.all(Radius.circular(30))
+                  // shape: BoxShape.rectangle,
+                ),
+                child: Center(
+                  child: Text(
+                    'HOME',
+                    style: TextStyle(
+                      fontFamily: 'Righteous',
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.normal,
+                      letterSpacing: 1.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             // Title
             SizedBox(
               width: double.infinity,
@@ -96,9 +121,21 @@ class _Add_wifi extends State<Add_WiFi> {
                           'USERNAME: ',
                           style: TextStyle(
 
-                            height: 2.2,
+                            height: 3,
                             fontFamily: 'Righteous',
-                            fontSize: 14.0,
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.normal,
+                            letterSpacing: 1.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          'PASSWORD: ',
+                          style: TextStyle(
+
+                            height: 6,
+                            fontFamily: 'Righteous',
+                            fontSize: 22.0,
                             fontWeight: FontWeight.normal,
                             letterSpacing: 1.0,
                             color: Colors.white,
@@ -130,7 +167,6 @@ class _Add_wifi extends State<Add_WiFi> {
                         Container(),
                       ],
                     ),
-
                     // Return to Home
                     GestureDetector(
                       onTap: () {
