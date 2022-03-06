@@ -8,8 +8,20 @@ import 'add_device2.dart';
 
 String type = 'TV';
 
-class Add_Device_1 extends StatelessWidget {
+class Add_Device_1 extends StatefulWidget {
   const Add_Device_1({Key? key}) : super(key: key);
+  @override
+  _Add_Device_1 createState() => _Add_Device_1();
+}
+
+class _Add_Device_1 extends State<Add_Device_1> {
+
+  Color _colorSelect = Color.fromRGBO(255, 255, 255, 0.4);
+  Color _colorNonSelect = Color.fromRGBO(255, 255, 255, 0.25);
+  bool pressAttention = false;
+  String device_type = '';
+  List<String> device_list = ['TV', 'AC', 'PROJECTOR', 'FAN', 'LIGHT BULB', 'MUSIC BOX', 'GAME CONTROLLER'];
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -101,119 +113,120 @@ class Add_Device_1 extends StatelessWidget {
       ),
     );
   }
-}
-
-String device_type = '';
-List<String> device_list = ['TV', 'AC', 'PROJECTOR', 'FAN', 'LIGHT BULB', 'MUSIC BOX', 'GAME CONTROLLER'];
-int index = 0;
-int count = device_list.length;
-
-Card _device(){
-  return Card(
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100.0)),
-    child: Padding(
-      padding: const EdgeInsets.all(11),
-      child: _image(),
-    ),
-    color: Color.fromRGBO(255, 255, 255, 0.33),
-  );
-}
-
-Image _image(){
-  index = index % (count);
-  // log(device_list[index]);
-  if(device_list[index] == 'TV'){
-    index = index + 1;
-    return Image.asset(
-      "img/icons8_tv_60px.png",
-      height: 70,
-    );
-  }
-  else if(device_list[index] == 'AC'){
-    index = index + 1;
-    return Image.asset(
-      "img/icons8_air_conditioner_60px.png",
-      height: 70,
-    );
-  }
-  else if(device_list[index] == 'PROJECTOR'){
-    index = index + 1;
-    return Image.asset(
-      "img/icons8_video_projector_52px.png",
-      height: 70,
-    );
-  }
-  else if(device_list[index] == 'FAN'){
-    index = index + 1;
-    return Image.asset(
-      "img/icons8_fan_head_60px.png",
-      height: 70,
-    );
-  }
-  else if(device_list[index] == 'LIGHT BULB'){
-    index = index + 1;
-    return Image.asset(
-      "img/icons8_idea_60px.png",
-      height: 70,
-    );
-  }
-  else if(device_list[index] == 'MUSIC BOX'){
-    index = index + 1;
-    return Image.asset(
-      "img/icons8_portable_speaker_60px.png",
-      height: 70,
-    );
-  }
-  else if(device_list[index] == 'GAME CONTROLLER'){
-    index = index + 1;
-    return Image.asset(
-      "img/icons8_game_controller_60px.png",
-      height: 70,
-    );
-  }
-  else{
-    return Image.asset(
-    "img/icons8_contacts_64px.png",
-    height: 35,
-    );
-  }
-
-}
-
-Column _DeviceList(){
-  final children = <Widget>[];
-  children.add(_device());
-  return Column(
-    children: children,
-  );
-}
-
-InkWell _inkWell(){
-  // log('index: $index');
-  if(index % (count) == 0){
-    return InkWell(
-      onTap: () => Get.to(() => Add_Device_2(),arguments: ['tv']),
-      child: Center(
-        child: _DeviceList(),
+  Card _device(int n){
+    return Card(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(100.0)),
+      child: Padding(
+        padding: const EdgeInsets.all(11),
+        child: _image(),
       ),
+      color: _stateColor(n),
     );
   }
-  else{
-    return InkWell(
-      onTap: () {},
-      child: Center(
-        child: _DeviceList(),
-      ),
+
+  Color _stateColor(int n){
+    if(n == 0){
+      return pressAttention ? _colorSelect : _colorNonSelect;
+    }
+    else{
+      return _colorNonSelect;
+    }
+  }
+
+  Image _image(){
+    index = index % device_list.length;
+    // log(device_list[index]);
+    if(device_list[index] == 'TV'){
+      index = index + 1;
+      return Image.asset(
+        "img/icons8_tv_60px.png",
+        height: 70,
+      );
+    }
+    else if(device_list[index] == 'AC'){
+      index = index + 1;
+      return Image.asset(
+        "img/icons8_air_conditioner_60px.png",
+        height: 70,
+      );
+    }
+    else if(device_list[index] == 'PROJECTOR'){
+      index = index + 1;
+      return Image.asset(
+        "img/icons8_video_projector_52px.png",
+        height: 70,
+      );
+    }
+    else if(device_list[index] == 'FAN'){
+      index = index + 1;
+      return Image.asset(
+        "img/icons8_fan_head_60px.png",
+        height: 70,
+      );
+    }
+    else if(device_list[index] == 'LIGHT BULB'){
+      index = index + 1;
+      return Image.asset(
+        "img/icons8_idea_60px.png",
+        height: 70,
+      );
+    }
+    else if(device_list[index] == 'MUSIC BOX'){
+      index = index + 1;
+      return Image.asset(
+        "img/icons8_portable_speaker_60px.png",
+        height: 70,
+      );
+    }
+    else if(device_list[index] == 'GAME CONTROLLER'){
+      index = index + 1;
+      return Image.asset(
+        "img/icons8_game_controller_60px.png",
+        height: 70,
+      );
+    }
+    else{
+      return Image.asset(
+        "img/icons8_contacts_64px.png",
+        height: 35,
+      );
+    }
+
+  }
+
+  Column _DeviceList(int n){
+    final children = <Widget>[];
+    children.add(_device(n));
+    return Column(
+      children: children,
     );
   }
-  // return InkWell(
-  //   onTap: () {
-  //
-  //
-  //   },
-  //   child: Center(
-  //     child: _DeviceList(),
-  //   ),
-  // );
+
+  InkWell _inkWell(){
+    // log('index: $index');
+    if(index % device_list.length == 0){
+      int n = index % device_list.length;
+      return InkWell(
+        onTap: () {
+          setState(() {
+            pressAttention = true;
+          });
+          Get.to(() => Add_Device_2(),arguments: ['tv']);
+        },
+        child: Center(
+          child: _DeviceList(n),
+        ),
+      );
+    }
+    else{
+      int n = index % device_list.length;
+      return InkWell(
+        onTap: () {},
+        child: Center(
+          child: _DeviceList(n),
+        ),
+      );
+    }
+  }
 }

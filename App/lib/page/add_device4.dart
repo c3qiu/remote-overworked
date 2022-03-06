@@ -149,14 +149,17 @@ class _Add_Device_4 extends State<Add_Device_4> {
             ),
             // NEXT button
             GestureDetector(
-              onTap: () => Get.to(
-                      () => Add_Device_5(),
-                  arguments: [Get.arguments[0], Get.arguments[1], Get.arguments[2]]),
+              onTap: () {
+                setState(() {
+                  pressAttention = true;
+                });
+                Get.to(() => Add_Device_5(), arguments: [Get.arguments[0], Get.arguments[1], Get.arguments[2]]);
+              },
               child: Container(
                 height: 54.0,
                 margin: const EdgeInsets.only(left:110.0, right: 110.0, top: 620.0),
                 decoration: BoxDecoration(
-                    color: Color.fromRGBO(255, 255, 255, 0.33),
+                    color: pressAttention ? _colorSelect : _colorNonSelect,
                     borderRadius: BorderRadius.all(Radius.circular(30))
                   // shape: BoxShape.rectangle,
                 ),

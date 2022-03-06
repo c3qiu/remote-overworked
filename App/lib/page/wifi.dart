@@ -12,7 +12,7 @@ class Add_WiFi extends StatefulWidget {
 
 class _Add_wifi extends State<Add_WiFi> {
 
-  bool pressAttention = false;
+  bool error = false;
   int index = 0;
 
   @override
@@ -100,12 +100,14 @@ class _Add_wifi extends State<Add_WiFi> {
                               SizedBox(
                                 height: 10.0,
                               ),
+                              Container(child: _errormsg(error)),
                               TextField(
                                 controller: wifiController,
                                 decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.wifi),
+                                  prefixIcon: Icon(Icons.wifi, color: Colors.black),
                                   labelText: "Network Name",
                                   labelStyle: TextStyle(
+                                    color: Colors.black,
                                     fontFamily: 'Righteous',
                                     fontWeight: FontWeight.normal,
                                   ),
@@ -116,10 +118,16 @@ class _Add_wifi extends State<Add_WiFi> {
                               ),
                               TextField(
                                 controller: passwordController,
+                                cursorColor: Colors.black,
+                                style: TextStyle(
+                                    color: Colors.black
+                                ),
                                 decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.lock),
+                                  // focusColor: Colors.white,
+                                  prefixIcon: Icon(Icons.lock, color: Colors.black),
                                   labelText: "Password",
                                   labelStyle: TextStyle(
+                                    color: Colors.black,
                                     fontFamily: 'Righteous',
                                     fontWeight: FontWeight.normal,
                                   ),
@@ -133,10 +141,14 @@ class _Add_wifi extends State<Add_WiFi> {
                                   elevation: 5,
                                   minWidth: 200,
                                   onPressed: () {
-                                    log(wifiController.text);
-                                    log(passwordController.text);
+                                    setState(() {
+                                      if(wifiController.text.isEmpty){
+                                        error = true;
+                                      }
+                                    });
                                     if(wifiController.text.isNotEmpty){
                                       Get.to(() => HomeView(),arguments: [wifiController.text, passwordController.text],);
+                                      error = false;
                                     }
                                   },
                                   shape: RoundedRectangleBorder(
@@ -196,5 +208,26 @@ class _Add_wifi extends State<Add_WiFi> {
         ),
       ),
     );
+  }
+  Container _errormsg(bool shown){
+    //og('error message showned');
+    // log('$shown');
+    if(shown){
+      return Container(
+        width: double.infinity,
+        child: Text(
+          'Please enter a vaild Network Name!',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'Righteous',
+            fontSize: 12.0,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 1.0,
+            color: Color(0xFF9E1D1D),
+          ),
+        ),
+      );
+    }
+    return Container();
   }
 }

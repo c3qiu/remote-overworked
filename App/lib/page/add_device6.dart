@@ -119,15 +119,18 @@ class _Add_Device_6 extends State<Add_Device_6> {
             ),
             // Return back to home button
             GestureDetector(
-              onTap: () => Get.to(
-                () => HomeView(),
-                  arguments: [Get.arguments[0], Get.arguments[1], Get.arguments[2], Get.arguments[3]]
-              ),
+              onTap: () {
+                setState(() {
+                  pressAttention = true;
+                });
+                Get.to(() => HomeView(),
+                    arguments: [Get.arguments[0], Get.arguments[1], Get.arguments[2], Get.arguments[3]]);
+              },
               child: Container(
                 height: 54.0,
                 margin: const EdgeInsets.only(left:30, right: 30, top: 570.0),
                 decoration: BoxDecoration(
-                    color: Color.fromRGBO(255, 255, 255, 0.33),
+                    color: pressAttention ? _colorSelect : _colorNonSelect,
                     borderRadius: BorderRadius.all(Radius.circular(30))
                   // shape: BoxShape.rectangle,
                 ),

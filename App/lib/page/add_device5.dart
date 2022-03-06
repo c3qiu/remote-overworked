@@ -16,7 +16,8 @@ class _Add_Device_5 extends State<Add_Device_5> {
 
   Color _colorSelect = Color.fromRGBO(255, 255, 255, 0.4);
   Color _colorNonSelect = Color.fromRGBO(255, 255, 255, 0.25);
-  bool pressAttention = false;
+  bool pressAttention1 = false;
+  bool pressAttention2 = false;
   int index = 0;
 
   Future<int> getRequest(String d, String b, String m) async {
@@ -162,12 +163,36 @@ class _Add_Device_5 extends State<Add_Device_5> {
   }
   GestureDetector _choiceButton(int n){
     return GestureDetector(
-      onTap: () => Get.to(
-        () => Add_Device_6(),
-        arguments: [Get.arguments[0], Get.arguments[1], Get.arguments[2], n]
-      ),
+      onTap: () {
+        if(n == 1){
+          setState(() {
+            pressAttention1 = true;
+            pressAttention2 = false;
+          });
+        }
+        else if(n == 0){
+          setState(() {
+            pressAttention1 = false;
+            pressAttention2 = true;
+          });
+        }
+        Get.to(() => Add_Device_6(),
+            arguments: [Get.arguments[0], Get.arguments[1], Get.arguments[2], n]);
+      },
       child: _choicesBox(),
     );
+  }
+
+  Color _stateColor(){
+    if(num == 0) {
+      return pressAttention1 ? _colorSelect : _colorNonSelect;
+    }
+    else if(num == 1) {
+      return pressAttention2 ? _colorSelect : _colorNonSelect;
+    }
+    else{
+      return _colorNonSelect;
+    }
   }
 
   List<Widget> _row(){
@@ -183,7 +208,7 @@ class _Add_Device_5 extends State<Add_Device_5> {
       width: 160,
       margin: const EdgeInsets.only(top: 420.0, left: 10.0, right: 10.0),
       decoration: BoxDecoration(
-          color: Color.fromRGBO(255, 255, 255, 0.33),
+          color: _stateColor(),
           borderRadius: BorderRadius.all(Radius.circular(30))
         // shape: BoxShape.rectangle,
       ),
@@ -194,7 +219,6 @@ class _Add_Device_5 extends State<Add_Device_5> {
   }
 
   int num = 0;
-
   Text _text(){
     String t ='';
     if(num == 0){
