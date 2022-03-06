@@ -117,7 +117,7 @@ class _Add_Device_6 extends State<Add_Device_6> {
                 ),
               ),
             ),
-            // NEXT button
+            // Return back to home button
             GestureDetector(
               onTap: () => Get.to(
                 () => HomeView(),

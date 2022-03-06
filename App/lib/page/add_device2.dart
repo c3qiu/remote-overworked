@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:developer';
@@ -150,7 +149,7 @@ class _Add_Device_2 extends State<Add_Device_2> {
         child: InkWell(
           child: _card(),
           onTap: () {
-            log('brand selector');
+            // log('brand selector');
             setState(() {
               pressAttention1 = !pressAttention1;
               pressAttention2 = false;
@@ -158,7 +157,7 @@ class _Add_Device_2 extends State<Add_Device_2> {
             Get.to(
               () => Model_Select_info(),
               //brand name pass in value
-              arguments: [Get.arguments[0],'samsung'],
+              arguments: [Get.arguments[0],'ss'],
             );
           }
         ),
@@ -169,7 +168,7 @@ class _Add_Device_2 extends State<Add_Device_2> {
         child: InkWell(
           child: _card(),
           onTap: () {
-            log('brand selector');
+            // log('brand selector');
             setState(() {
               pressAttention1 = false;
               pressAttention2 = !pressAttention2;

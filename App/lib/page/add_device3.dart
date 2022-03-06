@@ -5,6 +5,9 @@ import 'dart:developer';
 import 'home.dart';
 import 'add_device4.dart';
 
+List<String> samsung = ['Model 1', 'Model 2', 'Model 3', 'Model 4', 'Model 5', 'Model 6', 'Model 7'];
+List<String> lg = ['Model 1', 'Model 2', 'Model 3', 'Model 4'];
+
 class Model_Select_info extends StatefulWidget {
   const Model_Select_info({Key? key}) : super(key: key);
   @override
@@ -14,28 +17,30 @@ class Model_Select_info extends StatefulWidget {
 class _device_info extends State<Model_Select_info> {
   Color _colorSelect = Color.fromRGBO(255, 255, 255, 0.4);
   Color _colorNonSelect = Color.fromRGBO(255, 255, 255, 0.25);
-  List<String> samsung = ['Model 1', 'Model 2', 'Model 3', 'Model 4', 'Model 5', 'Model 6', 'Model 7'];
-  List<String> lg = ['Model 1', 'Model 2', 'Model 3', 'Model 4'];
   List<String> models = [];
   late List pressAction;
   int index = 0;
   int j = 0;
-  bool pressed = false;
 
   @override
   Widget build(BuildContext context) {
     // final details = Get.arguments;
     // log('${details}');
-    String brandname = Get.arguments[1].toString();
+    if(Get.arguments != null){
+      if(Get.arguments.length > 1){
+        String brandname = Get.arguments[1].toString();
 
-    if(brandname == 'samsung'){
-      models = samsung;
-    }
-    else if(brandname == 'lg'){
-      models = lg;
+        if(brandname == 'ss'){
+          models = samsung;
+        }
+        else if(brandname == 'lg'){
+          models = lg;
+        }
+      }
     }
 
     pressAction = List.filled(models.length, false);
+    index = 0;
     j = 0;
     //log('$pressAction');
 
@@ -177,7 +182,7 @@ class _device_info extends State<Model_Select_info> {
       child: InkWell(
           child: _card(),
           onTap: () {
-            log('model type selected');
+            // log('model type selected');
             _passValue(n);
           }
       ),
@@ -195,8 +200,12 @@ class _device_info extends State<Model_Select_info> {
   Text _modeltype(){
     String t = '';
     index = index % models.length;
-    t = models[index];
-    index = index + 1;
+    // log('$index');
+    // log('${models[index]}');
+    if(models.isNotEmpty){
+      t = models[index];
+      index = index + 1;
+    }
     return Text(
       t,
       style: TextStyle(
@@ -228,7 +237,7 @@ class _device_info extends State<Model_Select_info> {
         //log('$pressAction');
         Get.to(
                 () => Add_Device_4(),
-            arguments: [Get.arguments[0], Get.arguments[1],'model$n',]
+            arguments: [Get.arguments[0], Get.arguments[1],'$n',]
         );
       });
   }
@@ -237,13 +246,12 @@ class _device_info extends State<Model_Select_info> {
     // log('cur: $cur');
     if(cur != 10000000){
       pressAction[cur] = true;
+      cur = 10000000;
     }
-    if(cur < pressAction.length){
-      // for(j; j < pressAction.length; j++){
-        return pressAction[j++] ? _colorSelect : _colorNonSelect;
-      // }
-    }
-    return _colorNonSelect;
+    // if(cur < pressAction.length){
+    return pressAction[j++] ? _colorSelect : _colorNonSelect;
+    // }
+    // return _colorNonSelect;
   }
 
   Container _card(){

@@ -4,10 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:remote_overworked/router/app_pages.dart';
-import '../page/home.dart';
-import '../page/login.dart';
-
-
 
 Future<void> main() async {
   runApp(MyApp());

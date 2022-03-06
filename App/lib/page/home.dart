@@ -1,8 +1,6 @@
-// import 'dart:ui';
-// import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:remote_overworked/page/wifi.dart';
 import 'dart:developer';
 // import '../device/device.dart';
 import 'controller.dart';
@@ -11,8 +9,9 @@ import 'add_device1.dart';
 int index = 0;
 int c = 0;
 int map_index = 5;
-List<String> device_info = [];
 Map map = {};
+List<String> type = ['TV','PROJECTOR','AC','LIGHT BULB'];
+List<String> device_info = [];
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -21,40 +20,58 @@ class HomeView extends StatefulWidget {
 }
 
 class Home extends State<HomeView> {
-  List<String> type = ['TV','PROJECTOR','AC','LIGHT BULB'];
+
   String data = '';
+  String ssid = '';
+  String password = '';
   int count = 0;
+
+  Future<int> getRequest(String ssid, String password) async {
+    //replace your restFull API here.
+    final response = await http.get(Uri.parse('http://192.168.137.127/connect?ssid=' + ssid+ 'password=' + password));
+    return 0;
+  }
 
   @override
   Widget build(BuildContext context) {
     if(Get.arguments != null){
       List result = Get.arguments;
-      if(result.length == 4){
-        log('$result');
+      log('$result');
+      // wifi input
+      if(result.length == 2){
+        ssid = result[0];
+        password = result[1];
+        getRequest(ssid, password);
+      }
+      //Get information from Add_device
+      else if(result.length == 4){
         if(result[3] == 1){
-          type.add(result[0].toString().toUpperCase());
-
+          String modelT = result[0].toString().toUpperCase();
+          // log(modelT);
+          type.add(modelT);
+          // log('$type');
+          // log('$device_info');
+          device_info = [];
           device_info.add(result[0]);
           device_info.add(result[1]);
           device_info.add(result[2]);
-          if(device_info.length == 3) {
-            map[map_index] = device_info;
-            map_index = map_index + 1;
-          }
+          // log('$device_info');
+          map[map_index] = device_info;
+          map_index = map_index + 1;
           index = 0;
           c = 0;
         }
         else if(result[3] == 0) {
-            index = 0;
-            c = 0;
+          index = 0;
+          c = 0;
         }
       }
       result.clear();
     }
-    log('$type');
-    log('$device_info');
-    // log('${Get.arguments}');
-    log('$map');
+
+
+    // log('$device_info');
+    // log('$map');
 
     return Scaffold(
       appBar: AppBar(
@@ -87,19 +104,6 @@ class Home extends State<HomeView> {
                 fontWeight: FontWeight.normal,
                 letterSpacing: 1.0,
                 color: Color.fromRGBO(255, 255, 255, 1),
-              ),
-            ),
-            // Wifi Setting button
-            ElevatedButton(
-              onPressed: () async {
-                await Get.to(() => Add_WiFi());
-              },
-              child: Icon(
-                Icons.wifi
-              ),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(50, 50),
-                primary: Color.fromRGBO(255, 255, 255, 0.00),
               ),
             ),
             // trash icon
@@ -139,10 +143,8 @@ class Home extends State<HomeView> {
                       return _ButtonBuilder();
                     },
                   ),
-
                 ],
               ),
-
             ),
             Divider(),
           ],
@@ -251,8 +253,8 @@ class Home extends State<HomeView> {
     // log('count: ${_ItemCount()}');
     // log('c%count+1: ${(c % (count+1))}');
     if(c % (_ItemCount()+1) == 0){
-      log('Here c: $c');
-      log('Here count: $count');
+      // log('Here c: $c');
+      // log('Here count: $count');
       return ElevatedButton(
         onPressed: () async {
           await Get.to(() => Add_Device_1());
@@ -273,15 +275,14 @@ class Home extends State<HomeView> {
       );
     }
     else if(c % (count+1) - 4 > 0){
-      log('${c % (count+1) - 4}');
+      // log('${c % (count+1) - 4}');
       // log('$map');
       // log('${map[5]}');
       int cur = c % (count+1);
-      log('else if c: $c');
-      log('else if cur: $cur');
-      log('else if map: $map_index');
-
-      log('else if: ${map[cur]}');
+      // log('else if c: $c');
+      // log('else if cur: $cur');
+      // log('else if map: $map_index');
+      // log('else if: ${map[cur]}');
       return ElevatedButton(
         onPressed: ()  => Get.to(
             () => Controller(),
@@ -299,7 +300,7 @@ class Home extends State<HomeView> {
       );
     }
     else{
-      log('else : ${c % (count+1) - 4}');
+      // log('else : ${c % (count+1) - 4}');
       return ElevatedButton(
           onPressed: (){},
         // onPressed: ()  => Get.to(
@@ -318,12 +319,5 @@ class Home extends State<HomeView> {
       );
     }
   }
-
-  // void findmap(int cur){
-  //   if(){
-  //
-  //   }
-  //
-  // }
 
 }

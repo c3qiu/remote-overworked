@@ -20,8 +20,10 @@ class Controller extends StatelessWidget {
   @override
   Future<int> getRequest(String command) async {
     //replace your restFull API here.
+    String url = 'http://192.168.137.127/send?type=' + device + '&brand=' + brand + '&model=' + model + '&command=' + command;
+    log(url);
     final response = await http.get(Uri.parse('http://192.168.137.127/send?type=' + device + '&brand=' + brand + '&model=' + model + '&command=' + command));
-        return 0;
+    return 0;
     }
 
   @override
@@ -29,32 +31,31 @@ class Controller extends StatelessWidget {
 
     if(Get.arguments != null){
       List details = Get.arguments;
-      log('controller: ${details}');
-      log('$map');
-      // log('${details[0]}');
-      // log('${details[1]}');
-      // log('${details[2]}');
-      if(map[details[1]] != null){
-        device = map[details[1]][0].toString();
-        brand = map[details[1]][1].toString();
-        model = map[details[1]][2].toString();
-        log('already in file: $map');
-      }
-      else if(details[0].length == 3){
-        // log('details');
-        // List details = result;
-        device = details[0][0].toString();
-        brand = details[0][1].toString();
-        model = details[0][2].toString();
-        device_info.clear();
-        device_info.add(device);
-        device_info.add(brand);
-        device_info.add(model);
-        // log('$device_info');
-        // map_index = result[1];
-        map[map_index++] = device_info;
-        details.clear();
-        log('not in file: $map');
+      // log('controller: ${details.length}');
+      // log('$map');
+      if(details.length == 2){
+        if(map[details[1]] != null){
+          device = map[details[1]][0].toString();
+          brand = map[details[1]][1].toString();
+          model = map[details[1]][2].toString();
+          //log('already in file: $map');
+        }
+        else if(details[0].length == 3){
+          // log('details');
+          // List details = result;
+          device = details[0][0].toString();
+          brand = details[0][1].toString();
+          model = details[0][2].toString();
+          device_info.clear();
+          device_info.add(device);
+          device_info.add(brand);
+          device_info.add(model);
+          // log('$device_info');
+          // map_index = result[1];
+          map[map_index++] = device_info;
+          details.clear();
+          //log('not in file: $map');
+        }
       }
     }
     // final details = Get.arguments;
@@ -137,7 +138,7 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Power ON/OFF');
-                      mycommand = 'power';
+                      mycommand = 'pwr';
                       getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
@@ -164,7 +165,7 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Volume Up');
-                      mycommand = 'volume_up';
+                      mycommand = 'vu';
                       getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
@@ -191,7 +192,7 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Volume Down');
-                      mycommand = 'volume_down';
+                      mycommand = 'vd';
                       getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
@@ -218,7 +219,7 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Setting');
-                      mycommand = 'setting';
+                      mycommand = 'stgs';
                       getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
@@ -245,7 +246,7 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Return');
-                      mycommand = 'return';
+                      mycommand = 'bck';
                       getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
@@ -272,7 +273,7 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('input');
-                      mycommand = 'input';
+                      mycommand = 'src';
                       getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
@@ -364,7 +365,7 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Down');
-                      mycommand = 'down';
+                      mycommand = 'dwn';
                       getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
@@ -383,7 +384,7 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Left');
-                      mycommand = 'left';
+                      mycommand = 'lft';
                       getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
@@ -403,7 +404,7 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Right');
-                      mycommand = 'right';
+                      mycommand = 'rht';
                       getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO

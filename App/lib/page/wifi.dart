@@ -1,12 +1,8 @@
-import 'dart:ui';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:developer';
 
 import 'home.dart';
-import 'add_device5.dart';
 
 class Add_WiFi extends StatefulWidget {
   const Add_WiFi({Key? key}) : super(key: key);
@@ -21,7 +17,8 @@ class _Add_wifi extends State<Add_WiFi> {
 
   @override
   Widget build(BuildContext context) {
-
+    TextEditingController wifiController = new TextEditingController();
+    TextEditingController passwordController = new TextEditingController();
     // final details = Get.arguments;
     // log('brand: ${details[0]}');
     // log('model: ${details[1]}');
@@ -47,294 +44,154 @@ class _Add_wifi extends State<Add_WiFi> {
                 ),
               ),
             ) ,
-            // Return to Home
-            // FIXME
-            GestureDetector(
-              onTap: () => Get.to(HomeView()),
-              child: Container(
-                height: 40.0,
-                margin: const EdgeInsets.only(left:320.0, top:10.0, right: 5.0),
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(255, 255, 255, 0.5),
-                    borderRadius: BorderRadius.all(Radius.circular(30))
-                  // shape: BoxShape.rectangle,
-                ),
-                child: Center(
-                  child: Text(
-                    'HOME',
-                    style: TextStyle(
-                      fontFamily: 'Righteous',
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.normal,
-                      letterSpacing: 1.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            // Title
-            SizedBox(
-              width: double.infinity,
-              child: Text(
-                'WELCOME BACK',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  height: 4.0,
-                  fontFamily: 'Righteous',
-                  fontSize: 44.0,
-                  fontWeight: FontWeight.normal,
-                  letterSpacing: 1.0,
-                  color: Color.fromRGBO(255, 255, 255, 1),
-                ),
-              ),
-            ),
-            //Description1
             Container(
-              margin: const EdgeInsets.only(top: 190.0,),
+              padding: EdgeInsets.only(left: 15, right: 15),
+              height: double.infinity,
               width: double.infinity,
-              child: Text(
-                'Please enter wifi information below',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Righteous',
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.normal,
-                  letterSpacing: 1.0,
-                  color: Color.fromRGBO(255, 255, 255, 1),
-                ),
-              ),
-            ),
-            // Info and image
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 220.0, horizontal: 5.0),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(255, 255, 255, 0.33),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Center(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'USERNAME: ',
+              child: SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      // Title
+                      SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          'WELCOME BACK',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            height: 2,
+                            height: 4.0,
                             fontFamily: 'Righteous',
-                            fontSize: 22.0,
+                            fontSize: 44.0,
                             fontWeight: FontWeight.normal,
                             letterSpacing: 1.0,
-                            color: Colors.white,
+                            color: Color.fromRGBO(255, 255, 255, 1),
                           ),
                         ),
-                        Text(
-                          'PASSWORD: ',
+                      ),
+                      //Description1
+                      Container(
+                        margin: const EdgeInsets.only(top: 5.0,),
+                        width: double.infinity,
+                        child: Text(
+                          'Please enter wifi information below',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            height: 6,
                             fontFamily: 'Righteous',
-                            fontSize: 22.0,
+                            fontSize: 18.0,
                             fontWeight: FontWeight.normal,
                             letterSpacing: 1.0,
-                            color: Colors.white,
+                            color: Color.fromRGBO(255, 255, 255, 1),
                           ),
                         ),
-                        Expanded(
-                          child: Stack(
-                              children: [
-                                TextFormField(
-                                  cursorHeight: 50,
-                                  decoration: const InputDecoration(
-                                    border: UnderlineInputBorder(),
-                                    hintText: 'Enter your Username',
-                                  ),
-                                  style: TextStyle(
-                                    height: 2,
-                                  ),
-                                ),
-
-                                TextFormField(
-                                  cursorHeight: 50,
-                                  decoration: const InputDecoration(
-                                    border: UnderlineInputBorder(),
-                                    hintText: 'Enter your Password',
-                                  ),
-                                  style: TextStyle(
-                                    height: 9,
-                                  ),
-                                ),
-                              ]
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Container(
+                          padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            color: Color.fromRGBO(255, 255, 255, 0.33),
+                            borderRadius: BorderRadius.circular(30),
                           ),
-
-
-                        )
-                      ],
-                    ),
-
-                    // Row(
-                    //   children: [
-                    //     Text(
-                    //       'USERNAME: ',
-                    //       style: TextStyle(
-                    //
-                    //         height: 2.2,
-                    //         fontFamily: 'Righteous',
-                    //         fontSize: 14.0,
-                    //         fontWeight: FontWeight.normal,
-                    //         letterSpacing: 1.0,
-                    //         color: Colors.white,
-                    //       ),
-                    //     ),
-                    //     Container(),
-                    //   ],
-                    // ),
-                    // Return to Home
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     Get.to(() => HomeView());
-                    //   },
-                    //   child: Container(
-                    //     height: 40.0,
-                    //     margin: const EdgeInsets.only(left:320.0, top:10.0, right: 5.0),
-                    //     decoration: BoxDecoration(
-                    //         color: Color.fromRGBO(255, 255, 255, 0.5),
-                    //         borderRadius: BorderRadius.all(Radius.circular(30))
-                    //       // shape: BoxShape.rectangle,
-                    //     ),
-                    //     child: Center(
-                    //       child: Text(
-                    //         'CONNECT',
-                    //         textAlign: TextAlign.center,
-                    //         style: TextStyle(
-                    //           fontFamily: 'Righteous',
-                    //           fontSize: 12.0,
-                    //           fontWeight: FontWeight.normal,
-                    //           letterSpacing: 1.0,
-                    //           color: Colors.black,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
-                ),
-              ),
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              TextField(
+                                controller: wifiController,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.wifi),
+                                  labelText: "Network Name",
+                                  labelStyle: TextStyle(
+                                    fontFamily: 'Righteous',
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              TextField(
+                                controller: passwordController,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.lock),
+                                  labelText: "Password",
+                                  labelStyle: TextStyle(
+                                    fontFamily: 'Righteous',
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 30.0,
+                              ),
+                              MaterialButton(
+                                  height: 50.0,
+                                  elevation: 5,
+                                  minWidth: 200,
+                                  onPressed: () {
+                                    log(wifiController.text);
+                                    log(passwordController.text);
+                                    if(wifiController.text.isNotEmpty){
+                                      Get.to(() => HomeView(),arguments: [wifiController.text, passwordController.text],);
+                                    }
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: new BorderRadius.circular(30.0),
+                                  ),
+                                  color: Color(0xFF3E6A6D),
+                                  disabledColor: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.50),
+                                  disabledElevation: 0,
+                                  child: Text(
+                                    'CONNECT',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Righteous',
+                                      fontSize: 24.0,
+                                      fontWeight: FontWeight.normal,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                              ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.to(() => HomeView());
+                                  },
+                                  child: Text(
+                                    "HOME",
+                                    style: TextStyle(
+                                      fontFamily: 'Righteous',
+                                      color: Colors.white,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.0,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Colors.white,
+                                      decorationThickness: 4,
+                                    )
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                            ],
+                          ),
+                      ),
+                    ],
+                  )),
             ),
-            // Container(
-            //   margin: EdgeInsets.symmetric(vertical: 220.0, horizontal: 5.0),
-            //   width: double.infinity,
-            //   decoration: BoxDecoration(
-            //     color: Color.fromRGBO(255, 255, 255, 0.33),
-            //     borderRadius: BorderRadius.circular(40),
-            //   ),
-            //   child: Center(
-            //     child: Column(
-            //       children: [
-            //         Row(
-            //           children: [
-            //             Text(
-            //               'USERNAME: ',
-            //               style: TextStyle(
-            //
-            //                 height: 3,
-            //                 fontFamily: 'Righteous',
-            //                 fontSize: 22.0,
-            //                 fontWeight: FontWeight.normal,
-            //                 letterSpacing: 1.0,
-            //                 color: Colors.white,
-            //               ),
-            //             ),
-            //             Text(
-            //               'PASSWORD: ',
-            //               style: TextStyle(
-            //                 height: 6,
-            //                 fontFamily: 'Righteous',
-            //                 fontSize: 22.0,
-            //                 fontWeight: FontWeight.normal,
-            //                 letterSpacing: 1.0,
-            //                 color: Colors.white,
-            //               ),
-            //             ),
-            //             Expanded(
-            //               child: Stack(
-            //                   children: [
-            //                     TextFormField(
-            //                       decoration: const InputDecoration(
-            //                         border: UnderlineInputBorder(),
-            //                         hintText: 'Enter your Username',
-            //                       ),
-            //                       style: TextStyle(
-            //                         height: 3,
-            //                       ),
-            //                     ),
-            //
-            //                     TextFormField(
-            //                       decoration: const InputDecoration(
-            //                         border: UnderlineInputBorder(),
-            //                         hintText: 'Enter your Password',
-            //                       ),
-            //                       style: TextStyle(
-            //                         height: 9,
-            //                       ),
-            //                     ),
-            //                   ]
-            //               ),
-            //
-            //
-            //             )
-            //           ],
-            //         ),
-            //
-            //         // Row(
-            //         //   children: [
-            //         //     Text(
-            //         //       'USERNAME: ',
-            //         //       style: TextStyle(
-            //         //
-            //         //         height: 2.2,
-            //         //         fontFamily: 'Righteous',
-            //         //         fontSize: 14.0,
-            //         //         fontWeight: FontWeight.normal,
-            //         //         letterSpacing: 1.0,
-            //         //         color: Colors.white,
-            //         //       ),
-            //         //     ),
-            //         //     Container(),
-            //         //   ],
-            //         // ),
-            //         // Return to Home
-            //         // GestureDetector(
-            //         //   onTap: () {
-            //         //     Get.to(() => HomeView());
-            //         //   },
-            //         //   child: Container(
-            //         //     height: 40.0,
-            //         //     margin: const EdgeInsets.only(left:320.0, top:10.0, right: 5.0),
-            //         //     decoration: BoxDecoration(
-            //         //         color: Color.fromRGBO(255, 255, 255, 0.5),
-            //         //         borderRadius: BorderRadius.all(Radius.circular(30))
-            //         //       // shape: BoxShape.rectangle,
-            //         //     ),
-            //         //     child: Center(
-            //         //       child: Text(
-            //         //         'CONNECT',
-            //         //         textAlign: TextAlign.center,
-            //         //         style: TextStyle(
-            //         //           fontFamily: 'Righteous',
-            //         //           fontSize: 12.0,
-            //         //           fontWeight: FontWeight.normal,
-            //         //           letterSpacing: 1.0,
-            //         //           color: Colors.black,
-            //         //         ),
-            //         //       ),
-            //         //     ),
-            //         //   ),
-            //         // ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

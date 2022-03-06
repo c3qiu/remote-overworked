@@ -25,7 +25,7 @@ class _Add_Device_5 extends State<Add_Device_5> {
     String brand = b;
     String modeltype = m;
 
-    final response = await http.get(Uri.parse('http://192.168.137.127/send?type=' + devicetype + '&brand=' + brand + '&model=' + modeltype + '&command=' + 'power'));
+    final response = await http.get(Uri.parse('http://192.168.137.127/send?type=' + devicetype + '&brand=' + brand + '&model=' + modeltype + '&command=' + 'pwr'));
     return 0;
   }
 
