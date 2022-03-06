@@ -74,11 +74,7 @@ void get_credentials() {
       //get ssid and password
       const String ssid = request->getParam("ssid")->value();
       const String password = request->getParam("password")->value();
-
-      //send okay
-      request->send(200, "text/plain", "OK");
-      delay(20);
-
+      
       //save ssid and password
       preferences.putString("ssid", ssid);
       preferences.putString("password", password);
@@ -87,12 +83,14 @@ void get_credentials() {
       preferences.end();
       server.end();
 
+      //ok
+      request->send(200, "text/plain", "OK");
+
       //restart ESP
       ESP.restart();
     }
     //otherwise return and error
     else {
-      Serial.println("error");
       request->send(404);
     }
 
@@ -109,6 +107,14 @@ int wifi_connect() {
 
   //close preferences
   preferences.end();
+
+  if (ssid == "x") {
+    ssid = "DESKTOP-ODNF2ME 2182";
+  }
+
+  if (password == "y") {
+    password = "4(136yQ2";
+  }
 
   //connect to wifi
   WiFi.begin(ssid.c_str(), password.c_str());
@@ -135,60 +141,96 @@ int wifi_connect() {
     Serial.println("smart-remote.local");
   }
 
-  //setup route to receive commands at
+  //setup route to receive NEC commands at (LSB first)
   server.on("/send", HTTP_GET, [] (AsyncWebServerRequest * request) {
+    
     //send a specific code
     if (request->hasParam("code")) {
+      //get code
       String code = request->getParam("code")->value();
+      //cast as unsigned long
       unsigned long code2 = strtoul(code.c_str(), NULL, 16);
-      request->send(200, "text/plain", "OK");
 
-      Serial.println("");
-      Serial.print("Code in HEX: ");
-      Serial.println(code);
-
-      Serial.println("");
-      Serial.print("Code in Decimal: ");
-      Serial.println(code2);
-
+      //print
       Serial.println("");
       Serial.print("Sent code: ");
       Serial.println(code);
 
+      //send
       IrSender.sendNECRaw(code2, 0);
+
+      //ok
+      request->send(200, "text/plain", "OK");
     }
+    
     //send a code from a list of codes (work in progress)
     else if (request->hasParam("type") & request->hasParam("brand") & request->hasParam("model") & request->hasParam("command")) {
-      //read parameters into strings
+      //get type, brand, model, and command
       String type = request->getParam("type")->value();
       String brand = request->getParam("brand")->value();
       String model = request->getParam("model")->value();
       String command = request->getParam("command")->value();
 
-      //make a query string
+      //create query
       String query = type + "_" + brand + "_" + model + "_" + command;
-
-      //open preferences to ir codes header
+      
+      //retrieve code
       codes.begin("IR_CODES", true);
 
-      //read in the hex code as a string
-      String string_hex_code = codes.getString(query.c_str());
+      String string_hex_code = codes.getString(query.c_str(), "Not found");
 
-      //close preferences
       codes.end();
 
-      //convert the hex code to decimal
-      unsigned long hex_code = strtoul(string_hex_code.c_str(), NULL, 16);
+      //print
+      Serial.println("");
+      Serial.print("Sent: ");
+      Serial.println(string_hex_code);
 
-      //if brand is lg, send hex code using NEC
+      //send with appropriate protocol
+      //lg (NEC)
       if (brand == "lg") {
+        //cast code as unsigned long
+        unsigned long hex_code = strtoul(string_hex_code.c_str(), NULL, 16);
+
+        //send
         IrSender.sendNECRaw(hex_code, 0);
+
+        //ok
+        request->send(200, "text/plain", "OK");
+      }
+      //samsung
+      else if (brand == "ss") {
+        //get address and command
+        //length of hex code string
+        int len = string_hex_code.length() - 1;
+
+        //store address and command
+        char address_char [] = {string_hex_code[len - 3], string_hex_code[len - 2], string_hex_code[len - 1], string_hex_code[len], '\0'};
+        char command_char [] = {string_hex_code[4], string_hex_code[5], '\0'};
+
+        String address_string = String(address_char);
+        String command_string = String(command_char);
+
+        //convert to unsigned long int
+        uint16_t address_code = strtol(address_string.c_str(), NULL, 16);
+        uint8_t command_code = strtol(command_string.c_str(), NULL, 16);
+
+        //send
+        IrSender.sendSamsung(address_code, command_code, 0);
+
+        //ok
+        request->send(200, "text/plain", "OK");
+      }
+      else {
+        //error
+        request->send(404);
       }
 
-      request->send(200, "text/plain", "OK");
+
     }
     //otherwise send an error back
     else {
+      //error
       request->send(404);
     }
   });
@@ -218,22 +260,93 @@ void resetWifiCredentials() {
   ESP.restart();
 }
 
-//reads the codes into preferences
 void get_codes() {
   codes.begin("IR_CODES", false);
+  codes.clear();
 
-  //for type=tv, brand=lg, model=1
-  codes.putString("tv_lg_1_power", "0xF708FB04");
+  //LG codes recorded manually...
+  //LSB first
+  //power
+  codes.putString("tv_lg_1_pwr", "0xF708FB04");
+  //up
   codes.putString("tv_lg_1_up", "0xBF40FB04");
-  codes.putString("tv_lg_1_down", "0xBE41FB04");
-  codes.putString("tv_lg_1_left", "0xF807FB04");
-  codes.putString("tv_lg_1_right", "0xF906FB04");
+  //down
+  codes.putString("tv_lg_1_dwn", "0xBE41FB04");
+  //left
+  codes.putString("tv_lg_1_lft", "0xF807FB04");
+  //right
+  codes.putString("tv_lg_1_rht", "0xF906FB04");
+  //ok
   codes.putString("tv_lg_1_ok", "0xBB44FB04");
-  codes.putString("tv_lg_1_volup", "0xFD02FB04");
-  codes.putString("tv_lg_1_voldown", "0xFC03FB04");
-  codes.putString("tv_lg_1_settings", "0xBC43FB04");
-  codes.putString("tv_lg_1_input", "0xF40BFB04");
-  codes.putString("tv_lg_1_back", "0xD728FB04");
-  
+  //volume up
+  codes.putString("tv_lg_1_vu", "0xFD02FB04");
+  //volume down
+  codes.putString("tv_lg_1_vd", "0xFC03FB04");
+  //settings
+  codes.putString("tv_lg_1_stgs", "0xBC43FB04");
+  //source
+  codes.putString("tv_lg_1_src", "0xF40BFB04");
+  //back
+  codes.putString("tv_lg_1_bck", "0xD728FB04");
+
+
+  /*
+    //same codes that I read in above...
+    //https://tasmota.github.io/docs/Codes-for-IR-Remotes/#ir-codes-tv-lg-55uh8509
+    //LSB first
+    //20DF10EF (MSB first)
+    codes.putString("tv_lg_2_pwr", "0xF708FB04");
+    //20DF02FD (MSB first)
+    codes.putString("tv_lg_2_up", "0xBF40FB04");
+    //20DF827D (MSB first)
+    codes.putString("tv_lg_2_dwn", "0xBE41FB04");
+    //20DFE01F (MSB first)
+    codes.putString("tv_lg_2_lft", "0xF807FB04");
+    //20DF609F (MSB first)
+    codes.putString("tv_lg_2_rht", "0xF906FB04");
+    //20DF22DD (MSB first)
+    codes.putString("tv_lg_2_ok", "0xBB44FB04");
+    //20DF40BF (MSB first)
+    codes.putString("tv_lg_2_vu", "0xFD02FB04");
+    //20DFC03F (MSB first)
+    codes.putString("tv_lg_2_vd", "0xFC03FB04");
+    //20DFC23D (MSB first)
+    codes.putString("tv_lg_2_stgs", "0xBC43FB04");
+    //20DFD02F (MSB first)
+    codes.putString("tv_lg_2_src", "0xF40BFB04");
+    //20DF14EB (MSB first)
+    codes.putString("tv_lg_2_bck", "0xD728FB04");
+  */
+
+  //https://github.com/lepiaf/IR-Remote-Code
+  //LSB first
+  //E0E040BF (MSB first)
+  codes.putString("tv_ss_1_pwr", "0xFD020707");
+  //E0E006F9 (MSB first)
+  codes.putString("tv_ss_1_up", "0x9F600707");
+  //E0E08679 (MSB first)
+  codes.putString("tv_ss_1_dwn", "0x9E610707");
+  //E0E0A659 (MSB first)
+  codes.putString("tv_ss_1_lft", "0x9A650707");
+  //E0E046B9 (MSB first)
+  codes.putString("tv_ss_1_rht", "0x9D620707");
+  //E0E016E9 (MSB first)
+  codes.putString("tv_ss_1_ok", "0x97680707");
+  //E0E0E01F (MSB first)
+  codes.putString("tv_ss_1_vu", "0xF8070707");
+  //E0E0D02F (MSB first)
+  codes.putString("tv_ss_1_vd", "0xF40B0707");
+  //E0E0D22D (MSB first)
+  codes.putString("tv_ss_1_stgs", "0xB44B0707");
+  //E0E0807F (MSB first)
+  codes.putString("tv_ss_1_src", "0xFE010707");
+  //E0E01AE5 (MSB first)
+  codes.putString("tv_ss_1_bck", "0xA7580707");
+
+  //samsung speaker codes recorded manually...
+  //LSB first
+  codes.putString("spkr_ss_1_pwr", "0xE11E2C2C");
+  codes.putString("spkr_ss_1_vu", "0xE8172C2C");
+  codes.putString("spkr_ss_1_vd", "0xE9162C2C");
   codes.end();
 }
