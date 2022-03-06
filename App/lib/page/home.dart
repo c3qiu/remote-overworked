@@ -3,18 +3,58 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:developer';
-import '../device/device.dart';
+// import '../device/device.dart';
 import 'controller.dart';
 import 'add_device1.dart';
 
 int index = 0;
 int c = 0;
+int map_index = 5;
+List<String> device_info = [];
+Map map = {};
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
+  @override
+  Home createState() => Home();
+}
+
+class Home extends State<HomeView> {
+  List<String> type = ['TV','PROJECTOR','AC','LIGHT BULB'];
+  String data = '';
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
+    if(Get.arguments != null){
+      List result = Get.arguments;
+      if(result.length == 4){
+        log('$result');
+        if(result[3] == 1){
+          type.add(result[0].toString().toUpperCase());
+
+          device_info.add(result[0]);
+          device_info.add(result[1]);
+          device_info.add(result[2]);
+          if(device_info.length == 3) {
+            map[map_index] = device_info;
+            map_index = map_index + 1;
+          }
+          index = 0;
+          c = 0;
+        }
+        else if(result[3] == 0) {
+            index = 0;
+            c = 0;
+        }
+      }
+      result.clear();
+    }
+    log('$type');
+    log('$device_info');
+    // log('${Get.arguments}');
+    log('$map');
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
@@ -23,19 +63,19 @@ class HomeView extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-           // Background
-           Container(
-             padding: EdgeInsets.all(20),
-             width: double.infinity,
-             height: double.infinity,
-             decoration: BoxDecoration(
-               gradient: LinearGradient(
-                 begin: Alignment(-0.35,0.3),
-                 end: Alignment(-0.15,-0.88),
-                 colors: const <Color> [Color(0xff052338),Color(0xff1E9370),Color(0xff19424C)],
-               ),
-             ),
-           ),
+            // Background
+            Container(
+              padding: EdgeInsets.all(20),
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment(-0.35,0.3),
+                  end: Alignment(-0.15,-0.88),
+                  colors: const <Color> [Color(0xff19424C),Color(0xff1E9370),Color(0xff052338)],
+                ),
+              ),
+            ) ,
             // Title
             Text(
               ' MY HOME:',
@@ -94,180 +134,180 @@ class HomeView extends StatelessWidget {
       ),
     );
   }
-}
 
-List<String> type = ['TV','PROJECTOR','AC','LIGHT BULB'];
-String data = '';
-int count = 0;
+  int _ItemCount(){
+    count = type.length;
+    return count;
+  }
 
-int _ItemCount(){
-  count = type.length;
-  return count;
-}
+  String _Type(){
+    String t = '';
+    //log('$type');
+    index = index % count;
+    //log('$index');
+    if(type[index] == 'TV'){
+      t = 'TV';
+    }
+    else if(type[index] == 'AC'){
+      t = 'AC';
+    }
+    else if(type[index] == 'PROJECTOR'){
+      t = 'PROJECTOR';
+    }
+    else if(type[index] == 'LIGHT BULB'){
+      t = 'LIGHT BULB';
+    }
+    index = index + 1;
+    // data = t;
+    return t;
+  }
 
-String _Type(){
-  String t = '';
-  log('$type');
-  index = index % (count);
-  //log('$index');
-  if(type[index] == 'TV'){
-    t = 'TV';
-  }
-  else if(type[index] == 'AC'){
-    t = 'AC';
-  }
-  else if(type[index] == 'PROJECTOR'){
-    t = 'PROJECTOR';
-  }
-  else if(type[index] == 'LIGHT BULB'){
-    t = 'LIGHT BULB';
-  }
-  index = index + 1;
-  // data = t;
-  return t;
-}
+  Image _icon(){
+    if(data == 'TV'){
+      return Image.asset(
+        "img/icons8_tv_60px.png",
+        height: 35,
+      );
+    }
+    else if(data == 'PROJECTOR'){
+      return Image.asset(
+        "img/icons8_video_projector_52px.png",
+        height: 35,
+      );
+    }
+    else if(data == 'LIGHT BULB'){
+      return Image.asset(
+        "img/icons8_idea_60px.png",
+        height: 35,
+      );
+    }
+    else if(data == 'AC'){
+      return Image.asset(
+        "img/icons8_air_conditioner_60px.png",
+        height: 35,
+      );
+    }
+    else{
+      return Image.asset(
+        "img/icons8_contacts_64px.png",
+        height: 35,
+      );
+    }
 
-Icon _icon(){
-  if(data == 'TV'){
-    return Icon(
-      Icons.tv,
-      color: Colors.black,
-      size: 30.0,
+  }
+
+  Container _container(){
+    return Container(
+      alignment: Alignment.center,
+      height: 85.0,
+      child:_icon(),
     );
   }
-  else if(data == 'PROJECTOR'){
-    return Icon(
-      Icons.videogame_asset,
-      color: Colors.black,
-      size: 30.0,
-    );
-  }
-  else if(data == 'LIGHT BULB'){
-    return Icon(
-      Icons.lightbulb,
-      color: Colors.black,
-      size: 30.0,
-    );
-  }
-  else if(data == 'AC'){
-    return Icon(
-      Icons.hvac,
-      color: Colors.black,
-      size: 30.0,
-    );
-  }
-  else{
-    return Icon(
-      Icons.add,
-      color: Colors.black,
-      size: 30.0,
-    );
-  }
 
-}
-
-Container _container(){
-  return Container(
-    alignment: Alignment.center,
-    height: 90.0,
-    child:_icon(),
-  );
-}
-
-Text _textinfo(){
-  return Text(
-    'MY ' + data,
-    style: TextStyle(
-      height: -1.5,
-      fontFamily: 'Righteous',
-      fontSize: 15.0,
-      fontWeight: FontWeight.normal,
-      letterSpacing: 1.0,
-      color: Color.fromRGBO(255, 255, 255, 1),
-    ),
-    textAlign: TextAlign.center,
-  );
-}
-
-Column _DeviceListBuilder(){
-  data = _Type();
-  final children = <Widget>[];
-  children.add(_container());
-  children.add(_textinfo());
-  return Column(
-    children: children,
-  );
-}
-int n = 1;
-ElevatedButton _ButtonBuilder(){
-  log('c: $c');
-  if(c == n*(_ItemCount() + 1)){
-    log('Here c: $c');
-    n = n + 1;
-    return ElevatedButton(
-      onPressed: ()  => Get.to(Add_Device_1()),
-      child: Center(
-        child: Icon(
-          Icons.add_circle,
-          color: Colors.white,
-          size: 30.0,
-        ),
-        ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40.0),
-        ),
-        primary: Color.fromRGBO(255, 255, 255, 0.00),
+  Text _textinfo(){
+    return Text(
+      'MY ' + data,
+      style: TextStyle(
+        height: -1,
+        fontFamily: 'Righteous',
+        fontSize: 15.0,
+        fontWeight: FontWeight.normal,
+        letterSpacing: 1.0,
+        color: Color.fromRGBO(255, 255, 255, 1),
       ),
+      textAlign: TextAlign.center,
     );
   }
-  else{
-    return ElevatedButton(
-      onPressed: ()  => Get.to(Controller()),
-      child: Center(
-        child: _DeviceListBuilder(),
 
-      ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40.0),
-        ),
-        primary: Color.fromRGBO(255, 255, 255, 0.33),
-      ),
+  Column _DeviceListBuilder(){
+    data = _Type();
+    final children = <Widget>[];
+    children.add(_container());
+    children.add(_textinfo());
+    return Column(
+      children: children,
     );
   }
+
+  ElevatedButton _ButtonBuilder(){
+    // log('c: $c');
+    // log('count: $count');
+    // log('count: ${_ItemCount()}');
+    // log('c%count+1: ${(c % (count+1))}');
+    if(c % (_ItemCount()+1) == 0){
+      log('Here c: $c');
+      log('Here count: $count');
+      return ElevatedButton(
+        onPressed: () async {
+          await Get.to(() => Add_Device_1());
+        },
+        child: Center(
+          child: Icon(
+            Icons.add_circle,
+            color: Colors.white,
+            size: 30.0,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.0),
+          ),
+          primary: Color.fromRGBO(255, 255, 255, 0.00),
+        ),
+      );
+    }
+    else if(c % (count+1) - 4 > 0){
+      log('${c % (count+1) - 4}');
+      // log('$map');
+      // log('${map[5]}');
+      int cur = c % (count+1);
+      log('else if c: $c');
+      log('else if cur: $cur');
+      log('else if map: $map_index');
+
+      log('else if: ${map[cur]}');
+      return ElevatedButton(
+        onPressed: ()  => Get.to(
+            () => Controller(),
+            arguments: [map[cur], cur-4],
+        ),
+        child: Center(
+          child: _DeviceListBuilder(),
+        ),
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.0),
+          ),
+          primary: Color.fromRGBO(255, 255, 255, 0.33),
+        ),
+      );
+    }
+    else{
+      log('else : ${c % (count+1) - 4}');
+      return ElevatedButton(
+          onPressed: (){},
+        // onPressed: ()  => Get.to(
+        //     Controller(),
+        //   // arguments: [result[0]]
+        // ),
+        child: Center(
+          child: _DeviceListBuilder(),
+        ),
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.0),
+          ),
+          primary: Color.fromRGBO(255, 255, 255, 0.33),
+        ),
+      );
+    }
+  }
+
+  // void findmap(int cur){
+  //   if(){
+  //
+  //   }
+  //
+  // }
 
 }
-
-//        ),
-//     );
-//   }
-// }
-//
-// // -------------------------------------
-// //
-// //
-// // SafeArea(
-// //   child: GridView.builder(
-// //     //itemCount: _movieList != null ?_movieList!.length : 0,
-// //     itemBuilder: (context, i) {
-// //       return GestureDetector(
-// //         onTap: (){
-// //           //delegate.push(name: '/details',arguments: {'name':_movieList![i].name,'imgUrl':_movieList![i].imgUrl});
-// //         },
-// //         child: Column(
-// //           mainAxisSize: MainAxisSize.min,
-// //           children: [
-// //             //Flexible(child: Image.network(_movieList![i].imgUrl)),
-// //             //Text(_movieList![i].name),
-// //           ],
-// //         ),
-// //       );
-// //     }, gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-// //
-// //     mainAxisSpacing: 3,
-// //     crossAxisSpacing: 2,
-// //
-// //   ),
-// //   ),
-// // ),

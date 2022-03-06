@@ -1,15 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:developer';
+import 'package:http/http.dart' as http;
 
 import '../device/device.dart';
 
-String type = 'TV';
+int map_index = 1;
+List<String> device_info = [];
+Map map = {};
+
+String device = '';
+String brand = '';
+String model = '';
+String mycommand = '';
 
 class Controller extends StatelessWidget {
   const Controller({Key? key}) : super(key: key);
 
   @override
+  Future<int> getRequest(String command) async {
+    //replace your restFull API here.
+    final response = await http.get(Uri.parse('http://192.168.137.127/send?type=' + device + '&brand=' + brand + '&model=' + model + '&command=' + command));
+        return 0;
+    }
+
+  @override
   Widget build(BuildContext context) {
+
+    if(Get.arguments != null){
+      List details = Get.arguments;
+      log('controller: ${details}');
+      log('$map');
+      // log('${details[0]}');
+      // log('${details[1]}');
+      // log('${details[2]}');
+      if(map[details[1]] != null){
+        device = map[details[1]][0].toString();
+        brand = map[details[1]][1].toString();
+        model = map[details[1]][2].toString();
+        log('already in file: $map');
+      }
+      else if(details[0].length == 3){
+        // log('details');
+        // List details = result;
+        device = details[0][0].toString();
+        brand = details[0][1].toString();
+        model = details[0][2].toString();
+        device_info.clear();
+        device_info.add(device);
+        device_info.add(brand);
+        device_info.add(model);
+        // log('$device_info');
+        // map_index = result[1];
+        map[map_index++] = device_info;
+        details.clear();
+        log('not in file: $map');
+      }
+    }
+    // final details = Get.arguments;
+
+    // log('device: ${details[0]}');
+    // log('brand: ${details[1]}');
+    // log('model: ${details[2]}');
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
@@ -27,13 +80,13 @@ class Controller extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment(-0.35,0.3),
                   end: Alignment(-0.15,-0.88),
-                  colors: const <Color> [Color(0xff052338),Color(0xff1E9370),Color(0xff19424C)],
+                  colors: const <Color> [Color(0xff19424C),Color(0xff1E9370),Color(0xff052338)],
                 ),
               ),
             ),
             // Title
             Text(
-              ' MY ' + type + ':',
+              ' MY ' + device.toUpperCase() + ':',
               style: TextStyle(
                 height: 3.0,
                 fontFamily: 'Righteous',
@@ -54,10 +107,9 @@ class Controller extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Center(
-                  child: Icon(
-                    Icons.tv,
-                    color: Colors.black,
-                    size: 35.0,
+                  child: Image.asset(
+                    "img/icons8_tv_60px.png",
+                    height: 35,
                   ),
                 ),
               ),
@@ -85,6 +137,8 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Power ON/OFF');
+                      mycommand = 'power';
+                      getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
                     },
@@ -110,6 +164,8 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Volume Up');
+                      mycommand = 'volume_up';
+                      getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
                     },
@@ -135,6 +191,8 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Volume Down');
+                      mycommand = 'volume_down';
+                      getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
                     },
@@ -160,6 +218,8 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Setting');
+                      mycommand = 'setting';
+                      getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
                     },
@@ -185,6 +245,8 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Return');
+                      mycommand = 'return';
+                      getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
                     },
@@ -210,6 +272,8 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('input');
+                      mycommand = 'input';
+                      getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
                     },
@@ -249,6 +313,8 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('OK');
+                      mycommand = 'ok';
+                      getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
                     },
@@ -279,6 +345,8 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Up');
+                      mycommand = 'up';
+                      getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
                     },
@@ -296,6 +364,8 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Down');
+                      mycommand = 'down';
+                      getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
                     },
@@ -313,6 +383,8 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Left');
+                      mycommand = 'left';
+                      getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
                     },
@@ -331,6 +403,8 @@ class Controller extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       print('Right');
+                      mycommand = 'right';
+                      getRequest(mycommand);
                       ////////////////////////////////////////////////////////////////////////////
                       // TODO
                     },
@@ -352,23 +426,3 @@ class Controller extends StatelessWidget {
     );
   }
 }
-
-// class  extends StatelessWidget {
-//   const Controller({Key? key}) : super(key: key);
-// //
-// //   @override
-// //   _Remote_Control createState() => _Remote_Control();
-// // }
-// //
-// // class _Remote_Control extends State<Controller> {
-// //
-// //   @override
-// //   void initState() {
-// //     super.initState();
-// //     // Service.fetchMovieList().then((value) {
-// //     //   setState(() {
-// //     //     _movieList = value;
-// //     //   });
-// //     // });
-// //   }
-//
