@@ -9,6 +9,7 @@ AsyncWebServer server(80);
 
 //preferences object
 Preferences preferences;
+Preferences codes;
 
 //pin to reset wifi credentials
 const int resetButton = 2;
@@ -23,10 +24,12 @@ void setup() {
   //begin serial, irsender, and preferences (for wifi credentials)
   Serial.begin(115200);
   IrSender.begin();
-  preferences.begin("remote", false);
+  preferences.begin("credentials", false);
 
   //initalize reset button as an input
   pinMode(resetButton, INPUT);
+
+  get_codes();
 
   //if there is no ssid and credentials saved, then get the credentials
   if (preferences.getString("ssid", "") == "" & preferences.getString("password", "") == "") {
@@ -156,6 +159,32 @@ int wifi_connect() {
     }
     //send a code from a list of codes (work in progress)
     else if (request->hasParam("type") & request->hasParam("brand") & request->hasParam("model") & request->hasParam("command")) {
+      //read parameters into strings
+      String type = request->getParam("type")->value();
+      String brand = request->getParam("brand")->value();
+      String model = request->getParam("model")->value();
+      String command = request->getParam("command")->value();
+
+      //make a query string
+      String query = type + "_" + brand + "_" + model + "_" + command;
+
+      //open preferences to ir codes header
+      codes.begin("IR_CODES", true);
+
+      //read in the hex code as a string
+      String string_hex_code = codes.getString(query.c_str());
+
+      //close preferences
+      codes.end();
+
+      //convert the hex code to decimal
+      unsigned long hex_code = strtoul(string_hex_code.c_str(), NULL, 16);
+
+      //if brand is lg, send hex code using NEC
+      if (brand == "lg") {
+        IrSender.sendNECRaw(hex_code, 0);
+      }
+
       request->send(200, "text/plain", "OK");
     }
     //otherwise send an error back
@@ -177,7 +206,7 @@ int wifi_connect() {
 //reset wifi credentials
 void resetWifiCredentials() {
   //open preferences
-  preferences.begin("remote", false);
+  preferences.begin("credentials", false);
 
   //delete everything
   preferences.clear();
@@ -187,4 +216,24 @@ void resetWifiCredentials() {
 
   //restart the esp
   ESP.restart();
+}
+
+//reads the codes into preferences
+void get_codes() {
+  codes.begin("IR_CODES", false);
+
+  //for type=tv, brand=lg, model=1
+  codes.putString("tv_lg_1_power", "0xF708FB04");
+  codes.putString("tv_lg_1_up", "0xBF40FB04");
+  codes.putString("tv_lg_1_down", "0xBE41FB04");
+  codes.putString("tv_lg_1_left", "0xF807FB04");
+  codes.putString("tv_lg_1_right", "0xF906FB04");
+  codes.putString("tv_lg_1_ok", "0xBB44FB04");
+  codes.putString("tv_lg_1_volup", "0xFD02FB04");
+  codes.putString("tv_lg_1_voldown", "0xFC03FB04");
+  codes.putString("tv_lg_1_settings", "0xBC43FB04");
+  codes.putString("tv_lg_1_input", "0xF40BFB04");
+  codes.putString("tv_lg_1_back", "0xD728FB04");
+  
+  codes.end();
 }
