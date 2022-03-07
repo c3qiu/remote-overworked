@@ -74,7 +74,7 @@ void get_credentials() {
       //get ssid and password
       const String ssid = request->getParam("ssid")->value();
       const String password = request->getParam("password")->value();
-      
+
       //save ssid and password
       preferences.putString("ssid", ssid);
       preferences.putString("password", password);
@@ -143,7 +143,7 @@ int wifi_connect() {
 
   //setup route to receive NEC commands at (LSB first)
   server.on("/send", HTTP_GET, [] (AsyncWebServerRequest * request) {
-    
+
     //send a specific code
     if (request->hasParam("code")) {
       //get code
@@ -162,7 +162,7 @@ int wifi_connect() {
       //ok
       request->send(200, "text/plain", "OK");
     }
-    
+
     //send a code from a list of codes (work in progress)
     else if (request->hasParam("type") & request->hasParam("brand") & request->hasParam("model") & request->hasParam("command")) {
       //get type, brand, model, and command
@@ -173,7 +173,7 @@ int wifi_connect() {
 
       //create query
       String query = type + "_" + brand + "_" + model + "_" + command;
-      
+
       //retrieve code
       codes.begin("IR_CODES", true);
 
