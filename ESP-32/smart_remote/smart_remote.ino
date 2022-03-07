@@ -108,14 +108,6 @@ int wifi_connect() {
   //close preferences
   preferences.end();
 
-  if (ssid == "x") {
-    ssid = "DESKTOP-ODNF2ME 2182";
-  }
-
-  if (password == "y") {
-    password = "4(136yQ2";
-  }
-
   //connect to wifi
   WiFi.begin(ssid.c_str(), password.c_str());
 
