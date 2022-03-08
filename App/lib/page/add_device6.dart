@@ -128,7 +128,7 @@ class _Add_Device_6 extends State<Add_Device_6> {
               },
               child: Container(
                 height: 54.0,
-                margin: const EdgeInsets.only(left:30, right: 30, top: 570.0),
+                margin: const EdgeInsets.only(left:30, right: 30, top: 640.0),
                 decoration: BoxDecoration(
                     color: pressAttention ? _colorSelect : _colorNonSelect,
                     borderRadius: BorderRadius.all(Radius.circular(30))

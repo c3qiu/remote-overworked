@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:remote_overworked/page/controller.dart';
 import 'dart:developer';
 
 import 'home.dart';
@@ -45,33 +46,6 @@ class _Add_Device_4 extends State<Add_Device_4> {
                   colors: const <Color> [Color(0xff19424C),Color(0xff1E9370),Color(0xff052338)],
                 ),
               ),
-            ) ,
-            // Title
-            Text(
-              ' ADD DEVICE:',
-              style: TextStyle(
-                height: 3.0,
-                fontFamily: 'Righteous',
-                fontSize: 40.0,
-                fontWeight: FontWeight.normal,
-                letterSpacing: 1.0,
-                color: Color.fromRGBO(255, 255, 255, 1),
-              ),
-            ),
-            //Description1
-            Positioned(
-              left: 32.0,
-              child: Text(
-                'Please turn off your device...',
-                style: TextStyle(
-                  height: 9.4,
-                  fontFamily: 'Righteous',
-                  fontSize: 22.0,
-                  fontWeight: FontWeight.normal,
-                  letterSpacing: 1.0,
-                  color: Color.fromRGBO(255, 255, 255, 1),
-                ),
-              ),
             ),
             // Return to Home
             GestureDetector(
@@ -98,84 +72,121 @@ class _Add_Device_4 extends State<Add_Device_4> {
                 ),
               ),
             ),
-            // Info and image
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 40.0),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(255, 255, 255, 0.33),
-                shape: BoxShape.circle,
-                // borderRadius: BorderRadius.circular(40),
-              ),
-              child: Center(
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      "img/icons8_tv_240px.png",
-                      height: 250,
-                    ),
-                    Text(
-                      '  OFF',
-                      style: TextStyle(
-
-                        height: 2.2,
-                        fontFamily: 'Righteous',
-                        fontSize: 80.0,
-                        fontWeight: FontWeight.normal,
-                        letterSpacing: 1.0,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            //Description2
-            Positioned(
-              bottom: 120,
-              right: 10,
-              left: 10,
-              child: Text(
-                'Once your decive is turned off Press Next',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Righteous',
-                  fontSize: 22.0,
-                  fontWeight: FontWeight.normal,
-                  letterSpacing: 1.0,
-                  color: Color.fromRGBO(255, 255, 255, 1),
-                ),
-              ),
-            ),
-            // NEXT button
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  pressAttention = true;
-                });
-                Get.to(() => Add_Device_5(), arguments: [Get.arguments[0], Get.arguments[1], Get.arguments[2]]);
-              },
-              child: Container(
-                height: 54.0,
-                margin: const EdgeInsets.only(left:110.0, right: 110.0, top: 620.0),
-                decoration: BoxDecoration(
-                    color: pressAttention ? _colorSelect : _colorNonSelect,
-                    borderRadius: BorderRadius.all(Radius.circular(30))
-                  // shape: BoxShape.rectangle,
-                ),
-                child: Center(
+            Column(
+              children: [
+                // Title
+                SizedBox(
+                  width: double.infinity,
                   child: Text(
-                    'NEXT',
+                    ' ADD DEVICE:',
                     style: TextStyle(
+                      height: 3.0,
                       fontFamily: 'Righteous',
-                      fontSize: 28.0,
+                      fontSize: 40.0,
                       fontWeight: FontWeight.normal,
                       letterSpacing: 1.0,
-                      color: Colors.white,
+                      color: Color.fromRGBO(255, 255, 255, 1),
                     ),
                   ),
                 ),
-              ),
+                //Description1
+                SizedBox(
+                  //left: 32.0,
+                  child: Text(
+                    'Please turn off your device...',
+                    style: TextStyle(
+                      height: 4.0,
+                      fontFamily: 'Righteous',
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.normal,
+                      letterSpacing: 1.0,
+                      color: Color.fromRGBO(255, 255, 255, 1),
+                    ),
+                  ),
+                ),
+                //Empty box
+                SizedBox(
+                  height: 20.0,
+                ),
+                  // Info and image
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 40.0, horizontal: 40.0),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(255, 255, 255, 0.33),
+                    shape: BoxShape.circle,
+                    // borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: Center(
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          "img/icons8_tv_240px.png",
+                          height: 280,
+                        ),
+                        Text(
+                          '   OFF',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            height: 2.55,
+                            fontFamily: 'Righteous',
+                            fontSize: 76.0,
+                            fontWeight: FontWeight.normal,
+                            letterSpacing: 1.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                //Description2
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(left:10.0, right: 10.0, top: 30.0),
+                  child: Text(
+                    'Once your decive is turned off Press Next',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Righteous',
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.normal,
+                      letterSpacing: 1.0,
+                      color: Color.fromRGBO(255, 255, 255, 1),
+                    ),
+                  ),
+                ),
+                // NEXT button
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      pressAttention = true;
+                    });
+                    Get.to(() => Add_Device_5(), arguments: [Get.arguments[0], Get.arguments[1], Get.arguments[2]]);
+                  },
+                  child: Container(
+                    height: 54.0,
+                    margin: const EdgeInsets.only(left:110.0, right: 110.0, top: 30.0),
+                    decoration: BoxDecoration(
+                        color: pressAttention ? _colorSelect : _colorNonSelect,
+                        borderRadius: BorderRadius.all(Radius.circular(30))
+                      // shape: BoxShape.rectangle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        'NEXT',
+                        style: TextStyle(
+                          fontFamily: 'Righteous',
+                          fontSize: 28.0,
+                          fontWeight: FontWeight.normal,
+                          letterSpacing: 1.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
