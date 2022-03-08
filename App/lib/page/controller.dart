@@ -20,9 +20,8 @@ class Controller extends StatelessWidget {
   @override
   Future<int> getRequest(String command) async {
     //replace your restFull API here.
-    String url = 'http://192.168.137.127/send?type=' + device + '&brand=' + brand + '&model=' + model + '&command=' + command;
-    log(url);
-    final response = await http.get(Uri.parse('http://192.168.137.127/send?type=' + device + '&brand=' + brand + '&model=' + model + '&command=' + command));
+    final response = await http.get(Uri.parse('http://192.168.137.127/send?type=' + device +
+                                              '&brand=' + brand + '&model=' + model + '&command=' + command));
     return 0;
     }
 
@@ -117,7 +116,7 @@ class Controller extends StatelessWidget {
             ),
             // Controller Box
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 5.0),
+              padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 5.0),
               child: Stack(
                 children: <Widget>[
                   Container(
@@ -140,8 +139,6 @@ class Controller extends StatelessWidget {
                       print('Power ON/OFF');
                       mycommand = 'pwr';
                       getRequest(mycommand);
-                      ////////////////////////////////////////////////////////////////////////////
-                      // TODO
                     },
                     child: Container(
                       height: 47.0,
@@ -167,8 +164,6 @@ class Controller extends StatelessWidget {
                       print('Volume Up');
                       mycommand = 'vu';
                       getRequest(mycommand);
-                      ////////////////////////////////////////////////////////////////////////////
-                      // TODO
                     },
                     child: Container(
                       height: 62.0,
@@ -221,8 +216,6 @@ class Controller extends StatelessWidget {
                       print('Setting');
                       mycommand = 'stgs';
                       getRequest(mycommand);
-                      ////////////////////////////////////////////////////////////////////////////
-                      // TODO
                     },
                     child: Container(
                       height: 47.0,
