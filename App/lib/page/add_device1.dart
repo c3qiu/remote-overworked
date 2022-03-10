@@ -19,6 +19,7 @@ class _Add_Device_1 extends State<Add_Device_1> {
   Color _colorSelect = Color.fromRGBO(255, 255, 255, 0.4);
   Color _colorNonSelect = Color.fromRGBO(255, 255, 255, 0.25);
   bool pressAttention = false;
+  bool pressAttention1 = false;
   String device_type = '';
   List<String> device_list = ['TV', 'AC', 'PROJECTOR', 'FAN', 'LIGHT BULB', 'MUSIC BOX', 'GAME CONTROLLER'];
   int index = 0;
@@ -129,6 +130,9 @@ class _Add_Device_1 extends State<Add_Device_1> {
     if(n == 0){
       return pressAttention ? _colorSelect : _colorNonSelect;
     }
+    else if(n == 5){
+      return pressAttention1 ? _colorSelect : _colorNonSelect;
+    }
     else{
       return _colorNonSelect;
     }
@@ -192,7 +196,6 @@ class _Add_Device_1 extends State<Add_Device_1> {
         height: 35,
       );
     }
-
   }
 
   Column _DeviceList(int n){
@@ -211,8 +214,25 @@ class _Add_Device_1 extends State<Add_Device_1> {
         onTap: () {
           setState(() {
             pressAttention = true;
+            pressAttention1 = false;
           });
           Get.to(() => Add_Device_2(),arguments: ['tv']);
+        },
+        child: Center(
+          child: _DeviceList(n),
+        ),
+      );
+    }
+    //Speaker
+    if(index % device_list.length == 5){
+      int n = index % device_list.length;
+      return InkWell(
+        onTap: () {
+          setState(() {
+            pressAttention1 = true;
+            pressAttention = false;
+          });
+          Get.to(() => Add_Device_2(),arguments: ['spkr']);
         },
         child: Center(
           child: _DeviceList(n),

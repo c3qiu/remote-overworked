@@ -18,15 +18,23 @@ class _Add_Device_5 extends State<Add_Device_5> {
   Color _colorNonSelect = Color.fromRGBO(255, 255, 255, 0.25);
   bool pressAttention1 = false;
   bool pressAttention2 = false;
+  bool presspower = false;
   int index = 0;
+  String type = '';
+  String button = 'Power';
+  String cur_mode = 'Is the device turned on?';
 
-  Future<int> getRequest(String d, String b, String m) async {
+  Future<int> getRequest(String d, String b, String m, String cmd) async {
     //replace your restFull API here.
     String devicetype = d;
     String brand = b;
     String modeltype = m;
 
-    final response = await http.get(Uri.parse('http://192.168.137.127/send?type=' + devicetype + '&brand=' + brand + '&model=' + modeltype + '&command=' + 'pwr'));
+    final response = await http.get(Uri.parse(
+                                    'http://192.168.1.138/send?type=' + devicetype
+                                                              + '&brand=' + brand
+                                                              + '&model=' + modeltype
+                                                              + '&command=' + cmd));
     return 0;
   }
 
@@ -36,6 +44,15 @@ class _Add_Device_5 extends State<Add_Device_5> {
     // final details = Get.arguments;
     // log('brand: ${details[0]}');
     // log('model: ${details[1]}');
+    if(Get.arguments != null) {
+      if (Get.arguments.length > 2) {
+        type = Get.arguments[0].toString();
+        if (type == 'spkr') {
+           button = 'Paused';
+           cur_mode = 'Is it pasued now?';
+        }
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -74,7 +91,7 @@ class _Add_Device_5 extends State<Add_Device_5> {
             SizedBox(
               width: double.infinity,
               child: Text(
-                'Press the Power Button',
+                'Press the ' + button + ' Button',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   height: 9.4,
@@ -86,9 +103,35 @@ class _Add_Device_5 extends State<Add_Device_5> {
                 ),
               ),
             ),
+            //Description2
+            SizedBox(
+              width: double.infinity,
+              child: Text(
+                cur_mode,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  height: 32.0,
+                  fontFamily: 'Righteous',
+                  fontSize: 23.0,
+                  fontWeight: FontWeight.normal,
+                  letterSpacing: 1.0,
+                  color: Color.fromRGBO(255, 255, 255, 1),
+                ),
+              ),
+            ),
+            // YES&NO button
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: _row(),
+              ),
+            ),
             // Return to Home
             GestureDetector(
-              onTap: () => Get.to(() => HomeView()),
+              onTap: () {
+                Get.to(() => HomeView());
+              },
               child: Container(
                 height: 40.0,
                 margin: const EdgeInsets.only(left:320.0, top:10.0, right: 5.0),
@@ -112,55 +155,73 @@ class _Add_Device_5 extends State<Add_Device_5> {
               ),
             ),
             // Info and image
-            GestureDetector(
-              onTap: () {
-                getRequest(Get.arguments[0],Get.arguments[1], Get.arguments[2]);
-              },
-              child:Container(
-                margin: EdgeInsets.symmetric(vertical: 250.0, horizontal: 40.0),
-                height: 130,
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 0.33),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Image.asset(
-                    "img/icons8_shutdown_60px.png",
-                    height: 100,
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-              ),
-            ),
-            //Description2
-            SizedBox(
-              width: double.infinity,
-              child: Text(
-                'Is the device turned on?',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  height: 26.0,
-                  fontFamily: 'Righteous',
-                  fontSize: 23.0,
-                  fontWeight: FontWeight.normal,
-                  letterSpacing: 1.0,
-                  color: Color.fromRGBO(255, 255, 255, 1),
-                ),
-              ),
-            ),
-            // YES button
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: _row(),
-              ),
-            ),
+            _infoNbutton(),
           ],
         ),
       ),
     );
   }
+  Container _infoNbutton(){
+    if(type == 'spkr'){
+      return Container(child: _spkrcheckButton(),);
+    }
+    else{
+      return Container(child: _tvcheckButton(),);
+    }
+  }
+
+  GestureDetector _tvcheckButton(){
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          presspower = !presspower;
+        });
+        getRequest(Get.arguments[0],Get.arguments[1], Get.arguments[2], 'pwr');
+      },
+      child:Container(
+        margin: EdgeInsets.symmetric(vertical: 300.0, horizontal: 50.0),
+        height: 140,
+        decoration: BoxDecoration(
+          color: presspower ? _colorSelect : _colorNonSelect,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Image.asset(
+            "img/icons8_shutdown_60px.png",
+            height: 100,
+            fit: BoxFit.fitWidth,
+          ),
+        ),
+      ),
+    );
+  }
+
+  GestureDetector _spkrcheckButton(){
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          presspower = !presspower;
+        });
+        getRequest(Get.arguments[0],Get.arguments[1], Get.arguments[2], 'p');
+      },
+      child:Container(
+        margin: EdgeInsets.symmetric(vertical: 300.0, horizontal: 50.0),
+        height: 140,
+        decoration: BoxDecoration(
+          color: presspower ? _colorSelect : _colorNonSelect,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Image.asset(
+            "img/icons8_pause_60px.png",
+            height: 100,
+            fit: BoxFit.fitWidth,
+          ),
+        ),
+      ),
+    );
+  }
+
   GestureDetector _choiceButton(int n){
     return GestureDetector(
       onTap: () {
@@ -206,7 +267,7 @@ class _Add_Device_5 extends State<Add_Device_5> {
     return Container(
       height: 54.0,
       width: 160,
-      margin: const EdgeInsets.only(top: 420.0, left: 10.0, right: 10.0),
+      margin: const EdgeInsets.only(top: 550.0, left: 10.0, right: 10.0),
       decoration: BoxDecoration(
           color: _stateColor(),
           borderRadius: BorderRadius.all(Radius.circular(30))

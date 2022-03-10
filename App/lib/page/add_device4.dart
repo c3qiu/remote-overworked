@@ -18,6 +18,7 @@ class _Add_Device_4 extends State<Add_Device_4> {
   Color _colorNonSelect = Color.fromRGBO(255, 255, 255, 0.25);
   bool pressAttention = false;
   int index = 0;
+  String mode = 'off';
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,14 @@ class _Add_Device_4 extends State<Add_Device_4> {
     // final details = Get.arguments;
     // log('brand: ${details[0]}');
     // log('model: ${details[1]}');
+    if(Get.arguments != null) {
+      if (Get.arguments.length > 2) {
+        String type = Get.arguments[0].toString();
+        if (type == 'spkr') {
+          mode = 'on';
+        }
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -44,31 +53,6 @@ class _Add_Device_4 extends State<Add_Device_4> {
                   begin: Alignment(-0.35,0.3),
                   end: Alignment(-0.15,-0.88),
                   colors: const <Color> [Color(0xff19424C),Color(0xff1E9370),Color(0xff052338)],
-                ),
-              ),
-            ),
-            // Return to Home
-            GestureDetector(
-              onTap: () => Get.to(() => HomeView()),
-              child: Container(
-                height: 40.0,
-                margin: const EdgeInsets.only(left:320.0, top:10.0, right: 5.0),
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(255, 255, 255, 0.5),
-                    borderRadius: BorderRadius.all(Radius.circular(30))
-                  // shape: BoxShape.rectangle,
-                ),
-                child: Center(
-                  child: Text(
-                    'HOME',
-                    style: TextStyle(
-                      fontFamily: 'Righteous',
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.normal,
-                      letterSpacing: 1.0,
-                      color: Colors.black,
-                    ),
-                  ),
                 ),
               ),
             ),
@@ -93,9 +77,9 @@ class _Add_Device_4 extends State<Add_Device_4> {
                 SizedBox(
                   //left: 32.0,
                   child: Text(
-                    'Please turn off your device...',
+                    'Please turn '+ mode + ' your device...',
                     style: TextStyle(
-                      height: 4.0,
+                      height: 3.0,
                       fontFamily: 'Righteous',
                       fontSize: 22.0,
                       fontWeight: FontWeight.normal,
@@ -120,20 +104,25 @@ class _Add_Device_4 extends State<Add_Device_4> {
                   child: Center(
                     child: Stack(
                       children: [
-                        Image.asset(
-                          "img/icons8_tv_240px.png",
-                          height: 280,
+                        Center(
+                          child: Image.asset(
+                            "img/icons8_tv_240px.png",
+                            height: 280,
+                          ),
                         ),
-                        Text(
-                          '   OFF',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            height: 2.55,
-                            fontFamily: 'Righteous',
-                            fontSize: 76.0,
-                            fontWeight: FontWeight.normal,
-                            letterSpacing: 1.0,
-                            color: Colors.black,
+                        SizedBox(
+                          width: double.infinity,
+                          child: Text(
+                            mode.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              height: 2.55,
+                              fontFamily: 'Righteous',
+                              fontSize: 76.0,
+                              fontWeight: FontWeight.normal,
+                              letterSpacing: 1.0,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ],
@@ -145,7 +134,7 @@ class _Add_Device_4 extends State<Add_Device_4> {
                   width: double.infinity,
                   margin: const EdgeInsets.only(left:10.0, right: 10.0, top: 30.0),
                   child: Text(
-                    'Once your decive is turned off Press Next',
+                    'Once your decive is turned ' + mode + ' Press Next',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Righteous',
@@ -187,6 +176,35 @@ class _Add_Device_4 extends State<Add_Device_4> {
                   ),
                 ),
               ],
+            ),
+            // Return to Home
+            GestureDetector(
+              onTap: () {
+                Get.to(() => HomeView());
+              },
+              child: AbsorbPointer(
+                child: Container(
+                  height: 40.0,
+                  margin: const EdgeInsets.only(left:320.0, top:10.0, right: 5.0),
+                  decoration: BoxDecoration(
+                      color: Color.fromRGBO(255, 255, 255, 0.5),
+                      borderRadius: BorderRadius.all(Radius.circular(30))
+                    // shape: BoxShape.rectangle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      'HOME',
+                      style: TextStyle(
+                        fontFamily: 'Righteous',
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.normal,
+                        letterSpacing: 1.0,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
