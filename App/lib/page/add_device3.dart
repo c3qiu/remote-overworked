@@ -5,8 +5,9 @@ import 'dart:developer';
 import 'home.dart';
 import 'add_device4.dart';
 
-List<String> samsung = ['Model 1', 'Model 2', 'Model 3', 'Model 4', 'Model 5', 'Model 6', 'Model 7'];
+List<String> samsung = ['Model 1', 'Model 2', 'Model 3', 'Model 4', 'Model 5', 'Model 6', 'Model 7', 'Model 8'];
 List<String> lg = ['Model 1', 'Model 2', 'Model 3', 'Model 4'];
+String type = '';
 
 class Model_Select_info extends StatefulWidget {
   const Model_Select_info({Key? key}) : super(key: key);
@@ -29,11 +30,19 @@ class _device_info extends State<Model_Select_info> {
     if(Get.arguments != null){
       if(Get.arguments.length > 1){
         String brandname = Get.arguments[1].toString();
+        type = Get.arguments[0].toString();
+
+        if(type == 'spkr'){
+          type = 'Speaker';
+        }
 
         if(brandname == 'ss'){
           models = samsung;
         }
         else if(brandname == 'lg'){
+          models = lg;
+        }
+        else{
           models = lg;
         }
       }
@@ -81,7 +90,7 @@ class _device_info extends State<Model_Select_info> {
             SizedBox(
               width: double.infinity,
               child: Text(
-                'Select your TV model...',
+                'Select your ' + type + ' model...',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   height: 8.0,
@@ -120,7 +129,7 @@ class _device_info extends State<Model_Select_info> {
             ),
             // Info
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 5.0),
+              padding: const EdgeInsets.only(bottom: 40.0, top: 20.0, left: 5.0, right: 5.0),
               child: Stack(
                 children: <Widget>[
                   Container(
@@ -129,10 +138,6 @@ class _device_info extends State<Model_Select_info> {
                     height: double.infinity,
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(255, 255, 255, 0.33),
-                      // image: const DecorationImage(
-                      //   image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
-                      //   fit: BoxFit.cover,
-                      // ),
                       borderRadius: BorderRadius.circular(40),
                     ),
                   ),

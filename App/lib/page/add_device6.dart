@@ -62,7 +62,7 @@ class _Add_Device_6 extends State<Add_Device_6> {
             ),
             //Description1
             Container(
-              margin: const EdgeInsets.only(top:130.0, left: 10.0, right: 10.0),
+              margin: const EdgeInsets.only(top:145.0, left: 10.0, right: 10.0),
               width: double.infinity,
               child: _info(),
             ),
@@ -93,7 +93,7 @@ class _Add_Device_6 extends State<Add_Device_6> {
             ),
             // Info and image
             Container(
-              margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 40.0),
+              margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 50.0),
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Color.fromRGBO(255, 255, 255, 0.33),
@@ -128,7 +128,7 @@ class _Add_Device_6 extends State<Add_Device_6> {
               },
               child: Container(
                 height: 54.0,
-                margin: const EdgeInsets.only(left:30, right: 30, top: 640.0),
+                margin: const EdgeInsets.only(left:30, right: 30, top: 660.0),
                 decoration: BoxDecoration(
                     color: pressAttention ? _colorSelect : _colorNonSelect,
                     borderRadius: BorderRadius.all(Radius.circular(30))
