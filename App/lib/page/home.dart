@@ -39,8 +39,8 @@ class Home extends State<HomeView> {
       log('$result');
       // wifi input
       if(result.length == 2){
-        ssid = result[0];
-        password = result[1];
+        ssid = result[0].toString();
+        password = result[1].toString();
         getRequest(ssid, password);
       }
       //Get information from Add_device
@@ -69,7 +69,7 @@ class Home extends State<HomeView> {
       result.clear();
     }
 
-
+    log('$type');
     // log('$device_info');
     // log('$map');
 
@@ -175,12 +175,16 @@ class Home extends State<HomeView> {
     else if(type[index] == 'LIGHT BULB'){
       t = 'LIGHT BULB';
     }
+    else if(type[index] == 'SPKR'){
+      t = 'SPEAKER';
+    }
     index = index + 1;
     // data = t;
     return t;
   }
 
   Image _icon(){
+    //log('$data');
     if(data == 'TV'){
       return Image.asset(
         "img/icons8_tv_60px.png",
@@ -190,6 +194,12 @@ class Home extends State<HomeView> {
     else if(data == 'PROJECTOR'){
       return Image.asset(
         "img/icons8_video_projector_52px.png",
+        height: 35,
+      );
+    }
+    else if(data == 'SPEAKER'){
+      return Image.asset(
+        "img/icons8_portable_speaker_60px.png",
         height: 35,
       );
     }

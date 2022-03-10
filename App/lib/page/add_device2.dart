@@ -5,6 +5,10 @@ import 'dart:developer';
 import 'home.dart';
 import 'add_device3.dart';
 
+List<String> tvbrand = ['Samsung', 'LG', 'Sony', 'JVC', 'NEC', 'MagiQuest'];
+List<String> spkrbrand = ['Samsung', 'DinDin'];
+String type = '';
+
 class Add_Device_2 extends StatefulWidget {
   const Add_Device_2({Key? key}) : super(key: key);
   @override
@@ -17,11 +21,25 @@ class _Add_Device_2 extends State<Add_Device_2> {
   Color _colorNonSelect = Color.fromRGBO(255, 255, 255, 0.25);
   bool pressAttention1 = false;
   bool pressAttention2 = false;
-  List<String> brand = ['Samsung', 'LG', 'Sony', 'JVC', 'NEC', 'MagiQuest'];
+  List<String> brand = [];
   int index = 0;
 
   @override
   Widget build(BuildContext context) {
+
+    if(Get.arguments != null){
+      if(Get.arguments.length == 1){
+        type = Get.arguments[0].toString();
+        if(type == 'tv'){
+          brand = tvbrand;
+        }
+        else if(type == 'spkr'){
+          brand = spkrbrand;
+          type = 'Speaker';
+        }
+      }
+    }
+
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 0,
@@ -59,7 +77,7 @@ class _Add_Device_2 extends State<Add_Device_2> {
             SizedBox(
               width: double.infinity,
               child: Text(
-                'Select your TV brand...',
+                'Select your ' + type + ' brand...',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   height: 8.0,
@@ -98,7 +116,7 @@ class _Add_Device_2 extends State<Add_Device_2> {
             ),
             // Info
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 5.0),
+              padding: const EdgeInsets.only(bottom: 40.0, top: 20.0, left: 5.0, right: 5.0),
               child: Stack(
                 children: <Widget>[
                   Container(
@@ -107,10 +125,6 @@ class _Add_Device_2 extends State<Add_Device_2> {
                     height: double.infinity,
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(255, 255, 255, 0.33),
-                      // image: const DecorationImage(
-                      //   image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
-                      //   fit: BoxFit.cover,
-                      // ),
                       borderRadius: BorderRadius.circular(40),
                     ),
                   ),
@@ -127,12 +141,12 @@ class _Add_Device_2 extends State<Add_Device_2> {
                         ),
                       ),
                       // Brand Name
-                      _brandSelect(),
-                      _brandSelect(),
-                      _brandSelect(),
-                      _brandSelect(),
-                      _brandSelect(),
-                      _brandSelect(),
+                      Expanded(
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: _brandSelect(),
+                          )
+                      ),
                     ],
                   ),
                 ]
@@ -143,7 +157,16 @@ class _Add_Device_2 extends State<Add_Device_2> {
       ),
     );
   }
-  Ink _brandSelect(){
+
+  List<Widget> _brandSelect(){
+    final children = <Widget>[];
+    for(var i = 0; i < brand.length; i++){
+      children.add(_brandButton());
+    }
+    return children;
+  }
+
+  Ink _brandButton(){
     if(index % brand.length == 0){
       return Ink(
         child: InkWell(
@@ -163,7 +186,7 @@ class _Add_Device_2 extends State<Add_Device_2> {
         ),
       );
     }
-    else if(index % brand.length == 1){
+    else if(index % brand.length == 1 && Get.arguments[0] == 'tv'){
       return Ink(
         child: InkWell(
           child: _card(),
@@ -179,6 +202,25 @@ class _Add_Device_2 extends State<Add_Device_2> {
               arguments: [Get.arguments[0],'lg'],
             );
           }
+        ),
+      );
+    }
+    else if(index % brand.length == 1 && Get.arguments[0] == 'spkr'){
+      return Ink(
+        child: InkWell(
+            child: _card(),
+            onTap: () {
+              // log('brand selector');
+              setState(() {
+                pressAttention1 = false;
+                pressAttention2 = !pressAttention2;
+              });
+              Get.to(
+                    () => Model_Select_info(),
+                //brand name pass in value
+                arguments: [Get.arguments[0],'dd'],
+              );
+            }
         ),
       );
     }
